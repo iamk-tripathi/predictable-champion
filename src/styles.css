@@ -2,9 +2,13 @@
   color-scheme: dark;
   --bg: #000000;
   --surface: #050505;
+  --surface-elevated: #0d1117;
   --text: #f5f4f2;
   --muted: rgba(245, 244, 242, 0.5);
   --divider: rgba(245, 244, 242, 0.28);
+  --mesh-stroke: rgba(121, 176, 192, 0.14);
+  --mesh-glow: rgba(111, 188, 214, 0.18);
+  --card-surface: rgba(12, 16, 22, 0.72);
   --hero-width: min(1140px, calc(100vw - 72px));
 }
 
@@ -44,6 +48,7 @@ body::before {
 .page-shell {
   position: relative;
   z-index: 1;
+  overflow-x: clip;
 }
 
 .hero-scene {
@@ -256,6 +261,255 @@ h1 {
     radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.24), transparent 30%);
 }
 
+.mesh-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  margin-top: -1px;
+  padding: clamp(72px, 10svh, 112px) 0 clamp(72px, 10svh, 112px);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(94, 157, 180, 0.08), transparent 26%),
+    linear-gradient(180deg, #040507 0%, #071018 36%, #05080d 100%);
+  overflow: clip;
+}
+
+.mesh-background-layer,
+.mesh-section::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.mesh-background-layer {
+  z-index: 0;
+  background:
+    linear-gradient(var(--mesh-stroke) 1px, transparent 1px),
+    linear-gradient(90deg, var(--mesh-stroke) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%);
+  opacity: 0.4;
+}
+
+.mesh-section::after {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(240, 170, 102, 0.08), transparent 22%),
+    radial-gradient(circle at 82% 22%, rgba(92, 157, 208, 0.12), transparent 26%),
+    radial-gradient(circle at 50% 100%, rgba(115, 206, 196, 0.08), transparent 34%);
+}
+
+.mesh-reveal-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.98) 0%, rgba(2, 2, 3, 0.98) 72%, rgba(2, 2, 3, 0.92) 100%);
+  transform-origin: top center;
+  will-change: transform, opacity;
+}
+
+.mesh-content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-content: center;
+  width: 100%;
+  min-height: min(74svh, 760px);
+  margin-top: -20svh;
+  padding: 0;
+  will-change: transform, opacity;
+}
+
+.mesh-header {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 14px;
+  width: var(--hero-width);
+  max-width: var(--hero-width);
+  margin: 0 auto;
+  margin-bottom: clamp(26px, 4vw, 42px);
+}
+
+.mesh-eyebrow {
+  margin: 0;
+  color: rgba(200, 224, 230, 0.7);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.mesh-header h2 {
+  margin: 0;
+  max-width: 16ch;
+  font-size: clamp(32px, 4.4vw, 64px);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.mesh-cards-layer {
+  position: relative;
+  z-index: 1;
+  width: var(--hero-width);
+  max-width: var(--hero-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2vw, 26px);
+  align-items: stretch;
+}
+
+.mesh-card {
+  position: relative;
+  isolation: isolate;
+  perspective: 900px;
+  transform-style: preserve-3d;
+  display: grid;
+  min-height: 260px;
+  padding: clamp(22px, 2.8vw, 28px);
+  border: 1px solid rgba(146, 189, 203, 0.14);
+  border-radius: 26px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.01) 42%),
+    rgba(11, 17, 24, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -18px 36px rgba(112, 166, 194, 0.035),
+    0 16px 42px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(12px) saturate(120%);
+  overflow: hidden;
+  transition:
+    transform 260ms cubic-bezier(0.18, 0.84, 0.32, 1),
+    border-color 260ms ease,
+    box-shadow 260ms ease,
+    background-color 260ms ease,
+    backdrop-filter 260ms ease;
+  will-change: transform, box-shadow, backdrop-filter;
+}
+
+.mesh-card-body {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 18px;
+  transform:
+    rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg))
+    translateZ(0);
+  transform-style: preserve-3d;
+  transition: transform 180ms cubic-bezier(0.18, 0.84, 0.32, 1);
+  will-change: transform;
+}
+
+.mesh-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mesh-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(
+      240px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+      rgba(249, 252, 255, 0.26),
+      rgba(218, 236, 246, 0.14) 20%,
+      rgba(136, 196, 229, 0.08) 42%,
+      transparent 72%
+    );
+  opacity: 0;
+  filter: blur(8px);
+  transition: opacity 220ms ease;
+  pointer-events: none;
+}
+
+.mesh-card:hover {
+  transform: translateY(-14px) scale(1.014);
+  border-color: rgba(184, 224, 236, 0.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -24px 50px rgba(128, 186, 214, 0.055),
+    0 18px 34px rgba(3, 8, 14, 0.22),
+    0 34px 86px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(194, 228, 239, 0.07);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.015) 42%),
+    rgba(14, 22, 31, 0.84);
+  backdrop-filter: blur(18px) saturate(145%);
+}
+
+.mesh-card:hover .mesh-card-body {
+  transform:
+    rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg))
+    translateZ(22px);
+}
+
+.mesh-card:hover::before {
+  opacity: 0.98;
+}
+
+.mesh-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 24px 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+}
+
+.mesh-card-accent {
+  color: rgba(164, 215, 227, 0.62);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.mesh-card-arrow {
+  color: rgba(164, 215, 227, 0.62);
+  width: 18px;
+  height: 18px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 220ms cubic-bezier(0.18, 0.84, 0.32, 1), color 220ms ease;
+}
+
+.mesh-card-arrow svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.mesh-card:hover .mesh-card-arrow {
+  color: rgba(214, 236, 244, 0.9);
+  transform: translate3d(3px, -3px, 0);
+}
+
+.mesh-card h3 {
+  margin: 0;
+  font-size: clamp(30px, 3vw, 40px);
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+}
+
+.mesh-card p {
+  margin: 0;
+  max-width: 24ch;
+  color: rgba(238, 243, 247, 0.66);
+  font-size: 18px;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+}
+
 @keyframes reveal {
   from {
     opacity: 0;
@@ -313,6 +567,27 @@ h1 {
     width: min(1280px, calc(100vw - 12px));
     height: min(832px, 64svh);
   }
+
+  .mesh-section {
+    min-height: auto;
+    align-items: flex-start;
+    padding-top: 84px;
+    padding-bottom: 72px;
+  }
+
+  .mesh-content {
+    min-height: auto;
+    margin-top: 0;
+    align-content: start;
+  }
+
+  .mesh-cards-layer {
+    grid-template-columns: 1fr;
+  }
+
+  .mesh-header h2 {
+    max-width: 12ch;
+  }
 }
 
 @media (max-width: 640px) {
@@ -340,11 +615,34 @@ h1 {
   .word-carousel {
     min-height: 1.4em;
   }
+
+  .mesh-header h2 {
+    font-size: clamp(28px, 10vw, 40px);
+  }
+
+  .mesh-section {
+    padding-top: 96px;
+    padding-bottom: 56px;
+  }
+
+  .mesh-card {
+    min-height: 220px;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .mesh-card p {
+    font-size: 16px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .mesh-reveal-veil {
+    display: none;
   }
 
   .hero-copy,
@@ -356,7 +654,9 @@ h1 {
 
   .staggered-phrase--enter .staggered-char,
   .staggered-phrase--exit .staggered-char,
-  .scene-shell {
+  .scene-shell,
+  .mesh-reveal-veil,
+  .mesh-content {
     animation: none;
     transition: none;
   }
