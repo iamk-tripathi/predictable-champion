@@ -9,7 +9,7 @@ const MotionCaseStudy = lazy(() => import("./case-studies/MotionCaseStudy"));
 const MetroPlusCaseStudy = lazy(() => import("./case-studies/MetroPlusCaseStudy"));
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
+  <BrowserRouter basename={import.meta.env.BASE_URL}>
     <Suspense fallback={null}>
       <Routes>
         <Route path="/" element={<App />} />
