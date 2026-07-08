@@ -27,19 +27,19 @@ const LAYERS = [
 
 const RESEARCH_PHOTOS = [
   {
-    src: "/research-photo-2.jpg",
+    src: `${import.meta.env.BASE_URL}research-photo-2.jpg`,
     caption: "User interview sessions with real users to understand key pain points",
   },
   {
-    src: "/research-photo-1.jpg",
+    src: `${import.meta.env.BASE_URL}research-photo-1.jpg`,
     caption: "Late-night workspace setup during the initial discovery sprint",
   },
   {
-    src: "/research-photo-3.jpg",
+    src: `${import.meta.env.BASE_URL}research-photo-3.jpg`,
     caption: "Whiteboarding the user flow and identifying failure points",
   },
   {
-    src: "/benchmarking-details.png",
+    src: `${import.meta.env.BASE_URL}benchmarking-details.png`,
     caption: "Benchmarking flows of competitors",
   },
 ];
@@ -167,19 +167,19 @@ export default function ResearchSection() {
         >
           <div ref={logosRef} className={`cs-competitor-logos${mobileExpanded ? " is-expanded" : ""}`}>
             <div className="cs-competitor-logos__bubble cs-competitor-logos__bubble--white">
-              <img src="/competitor-paytm.png" alt="Airtel Payments Bank" />
+              <img src={`${import.meta.env.BASE_URL}competitor-paytm.png`} alt="Airtel Payments Bank" />
             </div>
             <div className="cs-competitor-logos__bubble cs-competitor-logos__bubble--black">
-              <img src="/competitor-remit.png" alt="Remitly" />
+              <img src={`${import.meta.env.BASE_URL}competitor-remit.png`} alt="Remitly" />
             </div>
             <div className="cs-competitor-logos__bubble cs-competitor-logos__bubble--white">
-              <img src="/competitor-paytm-actual.png" alt="Paytm" className="cs-competitor-logos__img--contain" />
+              <img src={`${import.meta.env.BASE_URL}competitor-paytm-actual.png`} alt="Paytm" className="cs-competitor-logos__img--contain" />
             </div>
             <div className="cs-competitor-logos__bubble cs-competitor-logos__bubble--white">
-              <img src="/competitor-zerodha.png" alt="Zerodha" />
+              <img src={`${import.meta.env.BASE_URL}competitor-zerodha.png`} alt="Zerodha" />
             </div>
             <div className="cs-competitor-logos__bubble cs-competitor-logos__bubble--black">
-              <img src="/competitor-wise.png" alt="Wise" />
+              <img src={`${import.meta.env.BASE_URL}competitor-wise.png`} alt="Wise" />
             </div>
           </div>
           <p className="cs-body" style={{ maxWidth: "none" }}>

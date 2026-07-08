@@ -8,17 +8,17 @@ import RevealOnScroll from "../components/RevealOnScroll";
 const QUOTES = [
   {
     text: "I didn't have to guess what version of my name to use.",
-    avatar: "/avatar-testimonial-1.png",
+    avatar: `${import.meta.env.BASE_URL}avatar-testimonial-1.png`,
     alt: "User avatar 1",
   },
   {
     text: "Didn't know Aadhaar and PAN were synced. Saved me from a mistake.",
-    avatar: "/avatar-testimonial-2.png",
+    avatar: `${import.meta.env.BASE_URL}avatar-testimonial-2.png`,
     alt: "User avatar 2",
   },
   {
     text: "Felt like the app already knew me.",
-    avatar: "/avatar-testimonial-3.png",
+    avatar: `${import.meta.env.BASE_URL}avatar-testimonial-3.png`,
     alt: "User avatar 3",
   },
 ];

@@ -61,7 +61,7 @@ export default function ProblemSection() {
         {/* Right column — phone mockup */}
         <RevealOnScroll delay={0.16} direction="right">
           <PhoneMockup
-            screenshotSrc="/kyc-old-form.png"
+            screenshotSrc={`${import.meta.env.BASE_URL}kyc-old-form.png`}
             screenshotAlt="Old KYC form — 15+ fields with no error guidance"
           />
         </RevealOnScroll>

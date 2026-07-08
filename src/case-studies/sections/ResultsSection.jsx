@@ -102,7 +102,7 @@ export default function ResultsSection() {
       <RevealOnScroll delay={0.25}>
         <div style={{ marginTop: 48 }}>
           <img
-            src="/analytics-dashboard.png"
+            src={`${import.meta.env.BASE_URL}analytics-dashboard.png`}
             alt="Analytics dashboard — KYC success trend"
             style={{
               width: "100%",

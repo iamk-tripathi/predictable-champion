@@ -3,11 +3,11 @@ import ScrollSection, { SectionLabel, SectionHeadline } from "../components/Scro
 import RevealOnScroll from "../components/RevealOnScroll";
 
 const SCREENS = [
-  { label: "Metro Ticket", file: "/metro-screen-ticket.png" },
-  { label: "Home", file: "/metro-screen-home.png" },
-  { label: "Journey Overview", file: "/metro-screen-journey.png" },
-  { label: "Final Ticket", file: "/metro-screen-final.png" },
-  { label: "Active Trip", file: "/metro-screen-active.png" },
+  { label: "Metro Ticket", file: `${import.meta.env.BASE_URL}metro-screen-ticket.png` },
+  { label: "Home", file: `${import.meta.env.BASE_URL}metro-screen-home.png` },
+  { label: "Journey Overview", file: `${import.meta.env.BASE_URL}metro-screen-journey.png` },
+  { label: "Final Ticket", file: `${import.meta.env.BASE_URL}metro-screen-final.png` },
+  { label: "Active Trip", file: `${import.meta.env.BASE_URL}metro-screen-active.png` },
 ];
 
 export default function SolutionSection() {

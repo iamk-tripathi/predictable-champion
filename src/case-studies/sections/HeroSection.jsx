@@ -105,7 +105,7 @@ export default function HeroSection() {
       >
         <dotlottie-wc
           ref={lottieRef}
-          src="/scroll-down.lottie"
+          src={`${import.meta.env.BASE_URL}scroll-down.lottie`}
           autoplay
           loop
           style={{ width: "56px", height: "56px" }}

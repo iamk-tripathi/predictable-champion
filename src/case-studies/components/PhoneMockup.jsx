@@ -9,7 +9,7 @@ import React, { useRef, useEffect, useCallback } from "react";
 export default function PhoneMockup({
   screenshotSrc,
   screenshotAlt = "App screenshot",
-  mockupSrc = "/iphone-mockup.png",
+  mockupSrc = `${import.meta.env.BASE_URL}iphone-mockup.png`,
 }) {
   const containerRef = useRef(null);
   const scrollAreaRef = useRef(null);

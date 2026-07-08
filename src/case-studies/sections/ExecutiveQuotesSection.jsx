@@ -4,7 +4,7 @@ import ScrollSection, { SectionLabel } from "../components/ScrollSection";
 
 const EXEC_QUOTES = [
   {
-    photo: "/exec-devin.png",
+    photo: `${import.meta.env.BASE_URL}exec-devin.png`,
     name: "Devin McGranahan",
     title: "CEO, Western Union",
     quote:
@@ -12,7 +12,7 @@ const EXEC_QUOTES = [
     accent: "#ffdd00",
   },
   {
-    photo: "/exec-sohini.png",
+    photo: `${import.meta.env.BASE_URL}exec-sohini.png`,
     name: "Sohini Rajola",
     title: "Head of Asia Pacific (then) · Now Executive Director, NPCI",
     quote:
