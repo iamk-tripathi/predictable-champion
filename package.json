@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 0.0.0.0",
+    "build:pages": "vite build --base=/predictable-champion/"
   },
   "dependencies": {
     "@lottiefiles/dotlottie-wc": "^0.9.12",
