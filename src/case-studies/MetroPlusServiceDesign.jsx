@@ -1,5 +1,12 @@
-import React, { useEffect } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useMotionValueEvent,
+} from "framer-motion";
+import rickshawUrl from "./media/rickshaw.png";
+import metroLogoUrl from "./media/metro-logo.png";
 import "./metro-service-styles.css";
 
 /**
@@ -777,19 +784,25 @@ function HalfUser() {
 
             <Reveal delay={0.1}>
               <p className="svc-body svc-body--onDark">
-                Human beings are unpredictable variables. Either the vehicle
-                waits, or the user loses their predictability. Both are
-                failures of the service, not the app.
+                The service doesn't know when a user will arrive. But the
+                moment they book, it knows they <em>intend</em> to. That
+                intent is a signal — and the closer they get to the pole,
+                the stronger and heavier that signal becomes.
               </p>
             </Reveal>
 
             <Reveal delay={0.2}>
               <p className="svc-body svc-body--onDark">
-                <strong>Definition.</strong> A <em>Half User</em> is a person
-                who has <em>pledged</em> the journey — declared intent — but
-                has not yet acted. They are the leading indicator of demand.
-                Every downstream decision — driver dispatch, pole visibility,
-                fleet mix — is calibrated off the Half User signal.
+                <strong>The model.</strong> Three concentric rings surround
+                every pole. At <strong>150 m</strong> — a{" "}
+                <em>Quarter User</em>: booked from home, holding ¼ of a seat
+                in pooled demand. Quarter users decide which vehicle type to
+                ready — but nothing leaves the station yet. At{" "}
+                <strong>75 m</strong> — a <em>Half User</em>: now moving,
+                commitment rising. This crossing triggers dispatch. At{" "}
+                <strong>20 m</strong> — a <em>Full User</em>: one seat, one
+                person, certain arrival. The vehicle is already ≤ 2 minutes
+                away.
               </p>
             </Reveal>
 
@@ -797,24 +810,76 @@ function HalfUser() {
               <p className="svc-manager-note svc-manager-note--onDark">
                 <span className="svc-manager-note__k">Why it travelled —</span>
                 Naming a concept the team can rally around is a design
-                artifact in its own right. The Half User gave product, ops
-                and engineering a shared unit of work; it moved into the
-                roadmap without needing translation.
+                artifact in its own right. Quarter / Half / Full User gave
+                product, ops and engineering a shared unit of work; it moved
+                into the roadmap without needing translation.
               </p>
             </Reveal>
           </div>
 
           <div className="svc-halfuser__viz" aria-hidden="true">
-            <div className="svc-halfuser__ring">
-              <span className="svc-halfuser__fraction">
-                <span>½</span>
-                <small>user</small>
-              </span>
-            </div>
+            <svg
+              viewBox="0 0 280 280"
+              className="svc-halfuser__svg"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Zone fills */}
+              <circle cx={140} cy={140} r={128} className="svc-radar__zone svc-radar__zone--q" />
+              <circle cx={140} cy={140} r={82}  className="svc-radar__zone svc-radar__zone--h" />
+              <circle cx={140} cy={140} r={32}  className="svc-radar__zone svc-radar__zone--f" />
+
+              {/* Rings */}
+              <circle cx={140} cy={140} r={128} className="svc-radar__ring" />
+              <circle cx={140} cy={140} r={82}  className="svc-radar__ring" />
+              <circle cx={140} cy={140} r={32}  className="svc-radar__ring" />
+
+              {/* Distance tick + label — upper-right of each ring */}
+              {[
+                { r: 128, label: "150 m" },
+                { r: 82,  label: "75 m"  },
+                { r: 32,  label: "20 m"  },
+              ].map(({ r, label }) => {
+                const ang = (-38 * Math.PI) / 180;
+                const x0 = 140 + r * Math.cos(ang);
+                const y0 = 140 + r * Math.sin(ang);
+                const x1 = 140 + (r + 14) * Math.cos(ang);
+                const y1 = 140 + (r + 14) * Math.sin(ang);
+                return (
+                  <g key={label}>
+                    <line x1={x0} y1={y0} x2={x1} y2={y1} className="svc-radar__tick" />
+                    <text x={x1 + 4} y={y1 + 3} className="svc-radar__meter">{label}</text>
+                  </g>
+                );
+              })}
+
+              {/* Fraction labels — stacked top of each ring */}
+              <text x={140} y={6}   className="svc-radar__frac svc-radar__frac--q" textAnchor="middle">¼</text>
+              <text x={140} y={54}  className="svc-radar__frac svc-radar__frac--h" textAnchor="middle">½</text>
+              <text x={140} y={104} className="svc-radar__frac svc-radar__frac--f" textAnchor="middle">1</text>
+
+              {/* Pole at centre */}
+              <g className="svc-radar__pole" transform="translate(140,140)">
+                <circle cx={0} cy={0} r={8} />
+                <circle cx={0} cy={0} r={3} className="svc-radar__pole-core" />
+              </g>
+
+              {/* Representative user dot — sitting in the half-user ring */}
+              <circle cx={195} cy={105} r={5} className="svc-radar__dot--h" />
+            </svg>
+
             <ul className="svc-halfuser__legend">
-              <li><span className="svc-dot svc-dot--intent" /> Intent declared</li>
-              <li><span className="svc-dot svc-dot--action" /> Action taken</li>
-              <li><span className="svc-dot svc-dot--served" /> Journey completed</li>
+              <li>
+                <span className="svc-dot" style={{ background: "rgba(255,181,71,0.42)" }} />
+                ¼ · 150 m · Vehicle type decided
+              </li>
+              <li>
+                <span className="svc-dot" style={{ background: "rgba(255,181,71,0.72)" }} />
+                ½ · 75 m · Vehicle dispatched
+              </li>
+              <li>
+                <span className="svc-dot svc-dot--intent" />
+                1 · 20 m · Vehicle ≤ 2 min away
+              </li>
             </ul>
           </div>
         </div>
@@ -861,176 +926,306 @@ const MECHANIC_STATES = [
 // Radar geometry (viewBox 0 0 470 440), centred on the pole
 const R = { cx: 230, cy: 205, full: 58, half: 120, quarter: 185 };
 
-// Dots that migrate inward: [quarter → half → full] positions
-const MIGRATIONS = [
-  { id: "m1", pts: [[357, 294], [315, 236], [251, 226]], delay: 0 },
-  { id: "m2", pts: [[130, 324], [145, 236], [206, 190]], delay: 1.1 },
-  { id: "m3", pts: [[308, 71], [199, 120], [232, 168]], delay: 2.2 },
-];
+// ---- Storyboard keyframes (Figma section “Metro+ Radar0 → 4”) -------------
+// Every track holds the CENTRE of a dot / rickshaw per frame, in radar units.
+const STORY_FRAMES = 5;
 
-// Static context dots (don’t move) to populate the field
-const STATIC_DOTS = {
-  quarter: [[95, 250], [360, 150], [180, 360]],
-  half: [[300, 265], [150, 150]],
-  full: [[210, 235]],
+// Six riders — each a unique user. Row = its centre across the five frames.
+const DOT_TRACKS = {
+  1: [[288, 13], [262, 77], [260, 93], [245, 160], [240, 187]],
+  2: [[415, 127], [415, 127], [415, 127], [296, 181], [283, 188]],
+  3: [[398, 350], [398, 350], [398, 350], [250, 214], [250, 214]],
+  4: [[163, 423], [180, 360], [180, 331], [182, 268], [239, 241]],
+  5: [[15, 250], [95, 250], [120, 250], [120, 241], [182, 234]],
+  6: [[25, 38], [25, 38], [66, 84], [137, 137], [166, 165]],
+};
+const DOT_IDS = [1, 2, 3, 4, 5, 6];
+
+// Two rickshaws: metro station (bottom-left) → dispatched toward the pole.
+const RICKSHAW_TRACKS = {
+  1: [[119, 392], [102, 365], [176, 287], [235, 230], [243, 218]],
+  2: [[85, 418], [85, 418], [103, 364], [125, 338], [180, 284]],
 };
 
-function VehicleGlyph() {
+// Chip status per rickshaw, per frame.
+const RICKSHAW_STATUS = {
+  1: ["Idle", "Ready", "Dispatched", "Arriving", "At pole"],
+  2: ["Idle", "Idle", "Ready", "Dispatched", "Arriving"],
+};
+
+// One caption per keyframe, revealed as the scroll crosses it.
+const STORY_CAPTIONS = [
+  {
+    t: "Six riders, booked from home",
+    d: "Every rider is a Quarter User — intent declared, but all still beyond the 150 m ring. Pooled weight is 1.5, so nothing leaves the station yet.",
+  },
+  {
+    t: "Rickshaw 1 is readied",
+    d: "Riders edge inward. Aggregated ¼-demand decides the vehicle type — Rickshaw 1 is prepared at the metro, held but not yet dispatched.",
+  },
+  {
+    t: "First dispatch",
+    d: "Two riders cross the 75 m ½ ring. Pole weight reaches 2 → Rickshaw 1 is dispatched, and Rickshaw 2 is readied behind it.",
+  },
+  {
+    t: "Second dispatch",
+    d: "Commitment keeps rising and weight climbs to 4. One vehicle can’t serve the pool, so Rickshaw 2 is dispatched to follow.",
+  },
+  {
+    t: "Arrival at the pole",
+    d: "Riders reach the 20 m core as Full Users. Rickshaw 1 has arrived and Rickshaw 2 is seconds behind — the wait collapses to near zero.",
+  },
+];
+
+const WEIGHTS = { q: 0.25, h: 0.5, f: 1 };
+
+function easeInOut(t) {
+  return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+}
+
+// Sample a per-frame track at a continuous scroll progress p (0..1).
+function sampleTrack(track, p) {
+  const segs = track.length - 1;
+  const x = Math.max(0, Math.min(0.999999, p)) * segs;
+  const i = Math.floor(x);
+  const t = easeInOut(x - i);
+  const a = track[i];
+  const b = track[i + 1] || a;
+  return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+}
+
+function zoneOf(cx, cy) {
+  const d = Math.hypot(cx - R.cx, cy - R.cy);
+  if (d <= R.full) return "f";
+  if (d <= R.half) return "h";
+  return "q";
+}
+
+function formatWeight(w) {
+  return (Math.round(w * 100) / 100).toFixed(2).replace(/\.?0+$/, "");
+}
+
+// The radar, redrawn for a given scroll progress. The sweep keeps its original
+// CSS rotation; dots and rickshaws are positioned by interpolation.
+function StoryRadar({ progress }) {
+  const dots = DOT_IDS.map((id) => {
+    const [x, y] = sampleTrack(DOT_TRACKS[id], progress);
+    return { id, x, y, zone: zoneOf(x, y) };
+  });
+  const r1 = sampleTrack(RICKSHAW_TRACKS[1], progress);
+  const r2 = sampleTrack(RICKSHAW_TRACKS[2], progress);
+  const dotStyle = {
+    q: { r: 5, cls: "svc-radar__dot--q" },
+    h: { r: 6, cls: "svc-radar__dot--h" },
+    f: { r: 7, cls: "svc-radar__dot--f" },
+  };
+
   return (
-    <g>
-      <rect x={-13} y={-6} width={26} height={13} rx={4} />
-      <rect x={-7} y={-12} width={14} height={8} rx={3} />
-      <circle cx={-7} cy={8} r={3} className="svc-radar__wheel" />
-      <circle cx={7} cy={8} r={3} className="svc-radar__wheel" />
-    </g>
+    <svg viewBox="0 0 470 440" xmlns="http://www.w3.org/2000/svg">
+      <circle cx={R.cx} cy={R.cy} r={R.quarter} className="svc-radar__zone svc-radar__zone--q" />
+      <circle cx={R.cx} cy={R.cy} r={R.half} className="svc-radar__zone svc-radar__zone--h" />
+      <circle cx={R.cx} cy={R.cy} r={R.full} className="svc-radar__zone svc-radar__zone--f" />
+
+      {[0, 45, 90, 135].map((a) => {
+        const rad = (a * Math.PI) / 180;
+        return (
+          <line
+            key={a}
+            x1={R.cx - R.quarter * Math.cos(rad)}
+            y1={R.cy - R.quarter * Math.sin(rad)}
+            x2={R.cx + R.quarter * Math.cos(rad)}
+            y2={R.cy + R.quarter * Math.sin(rad)}
+            className="svc-radar__spoke"
+          />
+        );
+      })}
+
+      {/* Rotating sweep — kept as the original touch */}
+      <g className="svc-radar__sweep-g">
+        <path
+          d={`M ${R.cx} ${R.cy} L ${R.cx + R.quarter} ${R.cy} A ${R.quarter} ${R.quarter} 0 0 0 ${
+            R.cx + R.quarter * Math.cos(-0.5)
+          } ${R.cy + R.quarter * Math.sin(-0.5)} Z`}
+          className="svc-radar__sweep"
+        />
+      </g>
+
+      <circle cx={R.cx} cy={R.cy} r={R.quarter} className="svc-radar__ring" />
+      <circle cx={R.cx} cy={R.cy} r={R.half} className="svc-radar__ring" />
+      <circle cx={R.cx} cy={R.cy} r={R.full} className="svc-radar__ring" />
+
+      {[
+        { r: R.quarter, t: "150 m" },
+        { r: R.half, t: "75 m" },
+        { r: R.full, t: "20 m" },
+      ].map(({ r, t }) => {
+        const rad = (-35 * Math.PI) / 180;
+        const x = R.cx + (r + 16) * Math.cos(rad);
+        const y = R.cy + (r + 16) * Math.sin(rad);
+        const x0 = R.cx + r * Math.cos(rad);
+        const y0 = R.cy + r * Math.sin(rad);
+        return (
+          <g key={t}>
+            <line x1={x0} y1={y0} x2={x} y2={y} className="svc-radar__tick" />
+            <text x={x + 4} y={y + 3} className="svc-radar__meter">
+              {t}
+            </text>
+          </g>
+        );
+      })}
+
+      <text x={R.cx} y={34} className="svc-radar__frac svc-radar__frac--q">¼</text>
+      <text x={R.cx} y={98} className="svc-radar__frac svc-radar__frac--h">½</text>
+      <text x={R.cx} y={162} className="svc-radar__frac svc-radar__frac--f">1</text>
+
+      <line x1={48} y1={392} x2={182} y2={253} className="svc-radar__dispatch" />
+
+      {/* Metro station + the Metro logo (Figma “image 3”) */}
+      <g className="svc-radar__station">
+        <rect x={20} y={382} width={56} height={22} rx={3} />
+        <text x={48} y={397} className="svc-radar__station-t">METRO</text>
+      </g>
+      <image
+        href={metroLogoUrl}
+        x={34}
+        y={352}
+        width={28}
+        height={28}
+        preserveAspectRatio="xMidYMid meet"
+      />
+
+      {/* Riders — each dot is a unique user; weight grows as it nears the pole */}
+      {dots.map(({ id, x, y, zone }) => (
+        <circle
+          key={id}
+          cx={x}
+          cy={y}
+          r={dotStyle[zone].r}
+          className={`svc-radar__dot ${dotStyle[zone].cls}`}
+        />
+      ))}
+
+      {/* Rickshaws (Figma “image 1 / image 2”), mirrored to face the pole */}
+      <image
+        href={rickshawUrl}
+        x={-15}
+        y={-15}
+        width={30}
+        height={30}
+        className="svc-radar__rickshaw"
+        preserveAspectRatio="xMidYMid meet"
+        transform={`translate(${r1[0]} ${r1[1]}) scale(-1 1)`}
+      />
+      <image
+        href={rickshawUrl}
+        x={-14}
+        y={-14}
+        width={28}
+        height={28}
+        className="svc-radar__rickshaw"
+        preserveAspectRatio="xMidYMid meet"
+        transform={`translate(${r2[0]} ${r2[1]}) scale(-1 1)`}
+      />
+
+      <g className="svc-radar__pole">
+        <circle cx={R.cx} cy={R.cy} r={9} />
+        <circle cx={R.cx} cy={R.cy} r={3.5} className="svc-radar__pole-core" />
+        <text x={R.cx} y={R.cy + 26} className="svc-radar__pole-t">POLE</text>
+      </g>
+    </svg>
   );
 }
 
-function MechanicRadar() {
+function StoryChip({ label, status }) {
+  return (
+    <span className="svc-chip" data-status={status}>
+      <span className="svc-chip__dot" aria-hidden="true" />
+      <span className="svc-chip__label">{label}</span>
+      <span className="svc-chip__status">{status}</span>
+    </span>
+  );
+}
+
+function MechanicStoryboard() {
   const reduce = useReducedMotion();
+  const wrapRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: wrapRef,
+    offset: ["start start", "end end"],
+  });
+  const [p, setP] = useState(0);
+  useMotionValueEvent(scrollYProgress, "change", (v) => setP(v));
+
+  const progress = reduce ? 0.5 : p;
+
+  // Live pole weight, summed from each interpolated rider's current zone.
+  const weight = DOT_IDS.reduce((sum, id) => {
+    const [x, y] = sampleTrack(DOT_TRACKS[id], progress);
+    return sum + WEIGHTS[zoneOf(x, y)];
+  }, 0);
+
+  const frame = Math.min(
+    STORY_FRAMES - 1,
+    Math.round(progress * (STORY_FRAMES - 1))
+  );
+  const caption = STORY_CAPTIONS[frame];
 
   return (
     <div
-      className="svc-radar"
-      role="img"
-      aria-label="Concentric radius model: users convert from quarter to half to full as they approach the pole, triggering vehicle dispatch from the metro station."
+      className={`svc-story${reduce ? " svc-story--static" : ""}`}
+      ref={wrapRef}
     >
-      <svg viewBox="0 0 470 440" xmlns="http://www.w3.org/2000/svg">
-        <circle cx={R.cx} cy={R.cy} r={R.quarter} className="svc-radar__zone svc-radar__zone--q" />
-        <circle cx={R.cx} cy={R.cy} r={R.half} className="svc-radar__zone svc-radar__zone--h" />
-        <circle cx={R.cx} cy={R.cy} r={R.full} className="svc-radar__zone svc-radar__zone--f" />
-
-        {[0, 45, 90, 135].map((a) => {
-          const rad = (a * Math.PI) / 180;
-          return (
-            <line
-              key={a}
-              x1={R.cx - R.quarter * Math.cos(rad)}
-              y1={R.cy - R.quarter * Math.sin(rad)}
-              x2={R.cx + R.quarter * Math.cos(rad)}
-              y2={R.cy + R.quarter * Math.sin(rad)}
-              className="svc-radar__spoke"
-            />
-          );
-        })}
-
-        {!reduce && (
-          <motion.g
-            style={{ transformOrigin: `${R.cx}px ${R.cy}px` }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
+      <div className="svc-story__stage">
+        <div className="svc-story__inner">
+          <div
+            className="svc-story__viz"
+            role="img"
+            aria-label="Radar: riders convert from quarter to half to full users as two rickshaws are dispatched from the metro toward the pole."
           >
-            <path
-              d={`M ${R.cx} ${R.cy} L ${R.cx + R.quarter} ${R.cy} A ${R.quarter} ${R.quarter} 0 0 0 ${
-                R.cx + R.quarter * Math.cos(-0.5)
-              } ${R.cy + R.quarter * Math.sin(-0.5)} Z`}
-              className="svc-radar__sweep"
-            />
-          </motion.g>
-        )}
+            <StoryRadar progress={progress} />
+          </div>
 
-        <circle cx={R.cx} cy={R.cy} r={R.quarter} className="svc-radar__ring" />
-        <circle cx={R.cx} cy={R.cy} r={R.half} className="svc-radar__ring" />
-        <circle cx={R.cx} cy={R.cy} r={R.full} className="svc-radar__ring" />
+          <aside className="svc-story__panel">
+            <div className="svc-story__frameno">
+              Frame {String(frame + 1).padStart(2, "0")} ·{" "}
+              {String(STORY_FRAMES).padStart(2, "0")}
+            </div>
 
-        {[
-          { r: R.quarter, t: "150 m" },
-          { r: R.half, t: "75 m" },
-          { r: R.full, t: "20 m" },
-        ].map(({ r, t }) => {
-          const rad = (-35 * Math.PI) / 180;
-          const x = R.cx + (r + 16) * Math.cos(rad);
-          const y = R.cy + (r + 16) * Math.sin(rad);
-          const x0 = R.cx + r * Math.cos(rad);
-          const y0 = R.cy + r * Math.sin(rad);
-          return (
-            <g key={t}>
-              <line x1={x0} y1={y0} x2={x} y2={y} className="svc-radar__tick" />
-              <text x={x + 4} y={y + 3} className="svc-radar__meter">
-                {t}
-              </text>
-            </g>
-          );
-        })}
+            <div className="svc-story__weight">
+              <span className="svc-story__weight-v">{formatWeight(weight)}</span>
+              <span className="svc-story__weight-k">
+                pole weight
+                <br />
+                Σ commitment
+              </span>
+            </div>
 
-        <text x={R.cx} y={34} className="svc-radar__frac svc-radar__frac--q">¼</text>
-        <text x={R.cx} y={98} className="svc-radar__frac svc-radar__frac--h">½</text>
-        <text x={R.cx} y={162} className="svc-radar__frac svc-radar__frac--f">1</text>
+            <div className="svc-story__chips">
+              <StoryChip label="Rickshaw 1" status={RICKSHAW_STATUS[1][frame]} />
+              <StoryChip label="Rickshaw 2" status={RICKSHAW_STATUS[2][frame]} />
+            </div>
 
-        <line x1={48} y1={392} x2={182} y2={253} className="svc-radar__dispatch" />
+            <motion.div
+              key={frame}
+              className="svc-story__caption"
+              initial={reduce ? false : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <h4 className="svc-story__caption-t">{caption.t}</h4>
+              <p className="svc-story__caption-d">{caption.d}</p>
+            </motion.div>
 
-        <g className="svc-radar__station">
-          <rect x={20} y={382} width={56} height={22} rx={3} />
-          <text x={48} y={397} className="svc-radar__station-t">METRO</text>
-        </g>
+            <div className="svc-story__progress" aria-hidden="true">
+              {Array.from({ length: STORY_FRAMES }).map((_, i) => (
+                <span key={i} data-on={i <= frame} />
+              ))}
+            </div>
 
-        {STATIC_DOTS.quarter.map(([x, y], i) => (
-          <circle key={`sq${i}`} cx={x} cy={y} r={5} className="svc-radar__dot svc-radar__dot--q" />
-        ))}
-        {STATIC_DOTS.half.map(([x, y], i) => (
-          <circle key={`sh${i}`} cx={x} cy={y} r={5.5} className="svc-radar__dot svc-radar__dot--h" />
-        ))}
-        {STATIC_DOTS.full.map(([x, y], i) => (
-          <circle key={`sf${i}`} cx={x} cy={y} r={6} className="svc-radar__dot svc-radar__dot--f" />
-        ))}
-
-        {MIGRATIONS.map(({ id, pts, delay }) =>
-          reduce ? (
-            <circle key={id} cx={pts[0][0]} cy={pts[0][1]} r={6} className="svc-radar__dot svc-radar__dot--q" />
-          ) : (
-            <motion.circle
-              key={id}
-              r={6}
-              fill="var(--amber)"
-              initial={false}
-              animate={{
-                cx: pts.map((p) => p[0]),
-                cy: pts.map((p) => p[1]),
-                fillOpacity: [0.42, 0.72, 1],
-                r: [6, 7, 8],
-              }}
-              transition={{
-                duration: 4.5,
-                times: [0, 0.5, 1],
-                repeat: Infinity,
-                repeatDelay: 1.4,
-                delay,
-                ease: "easeInOut",
-              }}
-            />
-          )
-        )}
-
-        {reduce ? (
-          <g className="svc-radar__vehicle" transform="translate(118,320)">
-            <VehicleGlyph />
-          </g>
-        ) : (
-          <motion.g
-            className="svc-radar__vehicle"
-            initial={false}
-            animate={{ x: [0, 0, 134], y: [0, 0, -139], opacity: [0, 0.2, 1] }}
-            transition={{
-              duration: 4.5,
-              times: [0, 0.4, 1],
-              repeat: Infinity,
-              repeatDelay: 1.4,
-              delay: 1.1,
-              ease: "easeInOut",
-            }}
-          >
-            <g transform="translate(48,392)">
-              <VehicleGlyph />
-            </g>
-          </motion.g>
-        )}
-
-        <g className="svc-radar__pole">
-          <circle cx={R.cx} cy={R.cy} r={9} />
-          <circle cx={R.cx} cy={R.cy} r={3.5} className="svc-radar__pole-core" />
-          <text x={R.cx} y={R.cy + 26} className="svc-radar__pole-t">POLE</text>
-        </g>
-      </svg>
+            {!reduce && <p className="svc-story__hint">Scroll to advance ↓</p>}
+          </aside>
+        </div>
+      </div>
     </div>
   );
 }
@@ -1093,10 +1288,6 @@ function HalfUserMechanic() {
           </p>
         </Reveal>
 
-        <Reveal delay={0.1}>
-          <MechanicRadar />
-        </Reveal>
-
         <ol className="svc-states" aria-label="Quarter, half and full user states">
           {MECHANIC_STATES.map((s, i) => (
             <Reveal key={s.id} delay={0.08 * i}>
@@ -1117,6 +1308,8 @@ function HalfUserMechanic() {
             </Reveal>
           ))}
         </ol>
+
+        <MechanicStoryboard />
 
         <Reveal delay={0.2}>
           <div className="svc-formula" aria-label="Demand weighting formula">
