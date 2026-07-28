@@ -1,8 +1,18 @@
 # Teaching AI to Speak Design System
 
-**A portfolio case study — building the context layer that makes AI generate production-grade, design-system-compliant UI.**
+**A public-facing case study on how I turned generative AI from a promising experiment into a governed, design-system-aware production capability.**
 
-> One line: *I turned generative AI from an unpredictable novelty into a governed, design-system-aware production capability — proven in a sandbox, ported to a real design system, and scaled into shipping work.*
+> The breakthrough was not better prompts. It was better context: a design system that could speak clearly to AI, and an operating layer that let AI generate, validate, and scale UI in ways that were measurable, trustworthy, and useful.
+
+---
+
+## Executive Summary
+
+Generative AI is easy to admire and difficult to trust in product work. The moment it is asked to create something real — something that must fit a brand, a system, and a production standard — it begins to fail. That failure is rarely about intelligence. It is about context.
+
+I set out to solve that problem by building the missing layer between AI and the design system. The result was not just a better prompt workflow, but a repeatable system for making AI generate on-system UI, flag violations, support App→Web scaling, and do so with a cost model that remains viable as the work grows. What began as an experiment in AI-assisted design became a practical foundation for a more scalable, more governable design practice.
+
+**In short:** I helped turn AI from a novelty into an operational design tool — one that could work with our system instead of against it.
 
 ---
 
@@ -14,15 +24,15 @@
 | **Timeline** | ~2026 · [X months] *(confirm)* |
 | **Scope** | Design systems · AI tooling · design-to-code · workflow & process |
 | **Tools** | Figma (MCP · Code Connect · Figma AI) · VS Code + GitHub Copilot · Storybook · Claude · TypeScript / React |
-| **The hook** | **~70% faster** App→Web conversion (including manual review) · **100% design-system fidelity** on validated builds (285/285 bindable props) · AI quality-check that **flags violations *and* names the fix** on tooling already licensed · context cost re-architected **O(n²) → O(n)** |
+| **The hook** | **Quality becomes enforceable at scale** · **App→Web conversion ~70% faster** · **Context cost re-architected O(n²) → O(n)** |
 
 ---
 
-## TL;DR
+## A sharper read
 
-Engineers and designers were reaching for AI to generate UI, but the output ignored every decision our design system encoded — wrong tokens, wrong components, wrong spacing. The problem wasn't the model; it was **missing context** between AI and the design system.
+The problem was never that AI was incapable. It was that it had no reliable access to the rules that make a design system real. It could generate something that looked plausible, but not something that was truly ours.
 
-I built that context layer. I proved it in a Material 3 sandbox, then applied the same pattern to our real design system (E1 / Nexus): generating on-system Figma components, an AI quality-check that governs design-system compliance, an intelligent App→Web scaling pipeline, and a cost model that keeps it all affordable as we scale. The through-line: **context is the interface. Designing it is interaction design applied to a new kind of user — the machine.**
+So I built the missing layer: the context that teaches AI what our design system is, how it behaves, and what quality looks like. I proved the approach in a Material 3 sandbox, then applied it to our real design system (E1 / Nexus) to enable on-system generation, intelligent quality checks, an App→Web scaling workflow, and a cost model that remains viable as the work scales. The through-line is simple: **context is the interface.**
 
 ---
 
@@ -30,59 +40,59 @@ I built that context layer. I proved it in a Material 3 sandbox, then applied th
 
 ### Every team has a design system. Almost no AI tool uses it.
 
-AI adoption inside product teams was exploding. People used it to scaffold screens, draft flows, brainstorm patterns. But the generated output looked nothing like *our* product: hardcoded hex values, non-DS spacing, raw HTML instead of components, hamburger menus where the system mandates a bottom bar.
+AI was rapidly becoming part of everyday product work. Teams used it to draft flows, explore patterns, and generate rough UI. But the output rarely felt like *our* product: wrong tokens, off-system spacing, non-DS components, and layouts that ignored the rules we had already defined.
 
-When Figma Make arrived — the big new "prompt-to-design" promise — the results were, bluntly, **unsatisfactory** for real product work. Plausible-looking, but not ours, and not production-usable.
+When Figma Make arrived, it felt like a major leap forward in prompt-to-design. The results were compelling at first glance, but for real product work they were still not good enough. They were not ours, and they were not production-ready.
 
-> **The problem wasn't AI capability. The problem was missing context.**
+> **The problem was not that AI lacked capability. It lacked context.**
 
 ### Why it mattered
 
-- **Design decisions were dying in handoff.** Months of token semantics, component-selection logic, and layout rules never reached the tools generating UI.
-- **Inconsistency at scale.** Every AI generation started from zero and reinvented the system slightly differently.
-- **Cost was about to bite.** Teams burned tokens freely because they were cheap — but tokens are becoming the currency, and a costly one.
+- **Design decisions were getting lost in handoff.** The logic behind our tokens, components, and layout rules never reached the tools generating UI.
+- **Consistency was fragile at scale.** Every generation started from zero and reinvented the system slightly differently.
+- **Cost was becoming a real constraint.** Teams could burn tokens freely in the early phase, but that would not scale as AI use grew.
 
 ### Constraints I set
 
-- **No new licenses.** Use tools the org already pays for (Figma, Figma AI, Copilot, Storybook).
-- **No production risk.** Prove the approach in a sandbox before touching the real design system or codebase.
-- **Design-system-only output.** Generated UI must use *only* DS components, variables, and tokens — measurable, not vibes.
+- **No new licenses.** I worked with tools that the organization already had access to: Figma, Figma AI, GitHub Copilot, Storybook.
+- **No production risk.** I proved the approach in a sandbox before touching the real design system or product code.
+- **Design-system-only output.** The goal was not “nice-looking UI.” The goal was measurable, on-system output.
 
-> 🎞 **Visual:** Full-bleed side-by-side — a generic AI-generated screen (annotated in red: wrong color, off-grid, non-DS component) vs. the same screen built on-system. This is the emotional hook; lead with it.
+> 🎞 **Visual:** A side-by-side comparison of a generic AI-generated screen and the same experience built on-system. This is the emotional hook for the story.
 
 ---
 
 ## 2 · The Reframe
 
-### AI doesn't generate generic output because it's bad at design. It generates generic output because nobody told it what *your* design looks like.
+### AI does not fail because it is bad at design. It fails because it has not been given the right design context.
 
-That reframe changed the whole program — from *"write better prompts"* to *"build better context."* The right question was never *"what can AI do?"* It was **"what does AI need from design to be useful?"**
+That insight changed the work. Instead of asking, “How do we write better prompts?” I asked a more useful question: **“What does AI need from design to be useful?”**
 
-I split the work into two complementary directions:
+That led to two complementary directions:
 
 | Direction | Meaning | Payoff |
 |---|---|---|
-| **With AI** | Use AI *today* as an automation + brainstorming assistant on existing craft — research, UI patterns, user-test drafting, QA. | Fast, tactical wins. |
-| **For AI** | Build the *infrastructure and context* that lets AI produce trustworthy, on-system output. | A durable moat that compounds. |
+| **With AI** | Use AI today as an automation + brainstorming assistant for research, UI patterns, user-test drafting, and QA. | Fast wins on real work. |
+| **For AI** | Build the infrastructure and context that allows AI to generate trustworthy, on-system output. | A durable capability that compounds. |
 
-The two meet: the more context I built **for** AI, the more valuable working **with** AI became.
+The two reinforce each other. The more context I built for AI, the more valuable working with AI became.
 
-> 🎞 **Visual:** A simple `AI ── [ CONTEXT ] ── Design System` diagram, "CONTEXT" filling the gap. Reuse across the deck as a recurring motif.
+> 🎞 **Visual:** A recurring diagram: `AI ── [ context ] ── Design System`.
 
-### This has a name now: the *agentic design system*
+### This has a name now: the agentic design system
 
-While I was building this, the field converged on a term for exactly this idea — the **agentic design system**: a design system that doesn't just document rules for people, but exposes them as machine-readable context plus autonomous agents that *generate* and *govern* UI. My work maps cleanly onto that emerging model:
+The field has started calling this an **agentic design system**: a design system that does more than document rules for people. It exposes those rules as machine-readable context and gives AI agents the ability to generate, evaluate, and govern UI. That is the space I helped build.
 
 | Agentic-DS capability *(industry term)* | What I built |
 |---|---|
-| **AI-ready component library** — components with contracts + structured metadata agents can act on | E1 / Nexus contextual DS · the machine-readable component **index** (keys, tokens, patterns) · the 2,129-line M3 variant map |
-| **MCP / context layer** — makes the DS queryable so AI generates the *right* code, not an approximation | Figma-MCP + Storybook-MCP + `design-system.md` + Code Connect pipeline |
-| **Generation** — produce on-system components & screens from the DS | Storybook→Figma components (Chip 100%) · App→Web scaling |
-| **Governance agent** — flags anything that doesn't conform | Rubix **Flag** (non-DS layers / tokens) |
-| **Drift / token sync** — catch divergence between Figma, code, and production | Token-sync audit (Core ↔ Figma drift report) |
-| **Human-in-the-loop** — advise, don't overwrite | Rubix **Suggest** (one DS component per layer) + overrides learning loop |
+| **AI-ready component library** | E1 / Nexus contextual DS, machine-readable component index, and the 2,129-line Material 3 variant map |
+| **MCP / context layer** | Figma MCP + Storybook MCP + `design-system.md` + Code Connect pipeline |
+| **Generation** | Storybook-to-Figma component generation and App→Web scaling |
+| **Governance agent** | Rubix Flag and Suggest for DS compliance and correction |
+| **Drift / token sync** | Token audit workflow to catch divergence between Figma and code |
+| **Human-in-the-loop** | Suggestion-first workflows with curated overrides rather than auto-replacement |
 
-> The point for a portfolio reviewer: **I didn't write a think-piece about the agentic design system — I built one, end to end, and measured it.**
+> The point for a portfolio reviewer is simple: **I did not write a think-piece about the agentic design system. I built one, measured it, and used it to ship real work.**
 
 ---
 
@@ -90,7 +100,7 @@ While I was building this, the field converged on a term for exactly this idea �
 
 ### From exploration to a system
 
-I first mapped where AI could genuinely help — **quality checks, localised research, better UI-pattern discovery, drafting and simulating user tests.** Most of these started as text-based prompting: useful, but ad hoc. The breakthrough was taking *one* of them — quality — and turning it into a **repeatable system**. That became the template for everything else.
+I began by identifying where AI could genuinely help — **quality checks, localized research, better UI-pattern discovery, and the drafting and simulation of user tests.** Most of these started as text-based prompting: useful, but still ad hoc. The breakthrough came when I took one of those ideas — quality — and turned it into a **repeatable system**. That became the template for everything that followed.
 
 ### The core insight, as an architecture
 
@@ -118,7 +128,7 @@ Figma DS ──▶ MCP ──▶ Context files ──▶ Code layer ──▶ St
 
 ## 4 · The Solution
 
-The work became five connected chapters — a proof, an application, a governor, a scaler, and an economic model.
+The work evolved into five connected chapters — a proof of concept, a real-world application, a governance layer, a scaling system, and an economic model.
 
 ### Chapter 1 — The context pipeline *(proof of concept: Material 3 sandbox)*
 
@@ -194,12 +204,12 @@ AI is still in an exploration phase where teams burn tokens because they're chea
 
 ## 6 · Impact
 
-### One pipeline. Four audiences benefit.
+### One system. Multiple audiences benefit.
 
-- **For designers** — design decisions stop dying in handoff. The reasoning behind every token and rule flows into every generation.
-- **For developers** — less interpretation overhead. Paste a Figma link, get a DS-compliant starting point; human judgment handles what matters.
-- **For product & business** — non-designers can generate DS-compliant prototype screens for brainstorming and stakeholder reviews without learning Figma.
-- **For the design system itself** — it stops being a doc people consult and becomes an **input tools consume**. It gets *more* valuable the more AI is used.
+- **For designers** — design decisions stop dying in handoff. The logic behind tokens, components, and layout rules now flows into the tools that generate and review UI.
+- **For developers** — the handoff starts from a more accurate foundation, reducing interpretation overhead and rework.
+- **For product and business** — teams can move faster from concept to review without sacrificing design-system discipline.
+- **For the design system itself** — it becomes an active input to the workflow rather than a document that people consult after the fact.
 
 ### The numbers
 
@@ -236,13 +246,13 @@ This isn't a one-off; it's the direction the field is now calling the future of 
 - **Governance is a design problem.** Suggestion-not-replacement, a single index writer, and a learning loop are what make an AI system *safe* to roll out.
 
 ### What I'd do differently
-- Instrument coverage metrics from day one, not after the first build.
-- Bring engineering in earlier on Code Connect — it's the deepest context link and the path to production-ready output.
+- Instrument coverage metrics from day one, not after the first successful build.
+- Bring engineering in earlier on Code Connect — it is the deepest context link and the clearest path to production-ready output.
 
 ### The bet
-> **The most important design work of the next decade won't be designing for users. It will be designing the systems that make AI useful to teams.** Structured documentation, machine-readable rules, token-level precision, information architecture for AI workflows. That's interaction design — applied to a new kind of interface.
+> **The most important design work of the next decade will not be designing only for users. It will be designing the systems that make AI useful to teams.** Structured documentation, machine-readable rules, token-level precision, and information architecture for AI workflows are now part of the craft.
 
-The field is already naming this shift — Microsoft calls it an *AI-first design system*; others call it *design shifting left*, or *the agentic design system*. Same move, different label: the design system stops being a document people consult and becomes the context a machine acts on. That's the thing I've been building — before it had a settled name.
+The field is already naming this shift — Microsoft calls it an *AI-first design system*; others call it *design shifting left* or *the agentic design system*. The point is the same: the design system stops being a document people consult and becomes the context a machine acts on. That is the work I have been building.
 
 ---
 

@@ -263,9 +263,9 @@ export default function AIxUXCaseStudy() {
           <p className="kicker">Portfolio Case Study</p>
           <h1>Teaching AI to Speak Design System</h1>
           <p className="lead">
-            I turned generative AI from an unpredictable novelty into a governed,
-            design-system-aware production capability - proven in a sandbox, ported to a real
-            design system, and scaled into shipping work.
+            The breakthrough was not better prompts. It was better context: a design system that
+            could speak clearly to AI, and an operating layer that let AI generate, validate, and
+            scale UI in ways that were measurable, trustworthy, and useful.
           </p>
           <div className="hero-meta">
             <div>
@@ -303,11 +303,13 @@ export default function AIxUXCaseStudy() {
           </div>
           <div>
             <p>
-              Teams used AI to scaffold screens, but the output ignored DS decisions: wrong
-              tokens, wrong components, wrong spacing. Plausible-looking output, but not ours.
+              Generative AI was quickly becoming part of everyday product work. Teams used it to
+              draft flows, explore patterns, and generate rough UI. But the output rarely felt like
+              our product: wrong tokens, off-system spacing, non-DS components, and layouts that
+              ignored the rules we had already defined.
             </p>
             <blockquote>
-              The problem was not AI capability. The problem was missing context.
+              The problem was not that AI lacked capability. It lacked context.
             </blockquote>
           </div>
         </section>
@@ -315,8 +317,8 @@ export default function AIxUXCaseStudy() {
         <section className="aiux-reframe">
           <p className="kicker">The Reframe</p>
           <h2>
-            AI generates generic output because nobody told it what <mark>your design</mark> looks
-            like.
+            AI does not fail because it is bad at design. It fails because it has not been given the
+            right design context.
           </h2>
 
           <div className="with-for">
@@ -338,7 +340,8 @@ export default function AIxUXCaseStudy() {
 
           <h3>This has a name now: the agentic design system.</h3>
           <p className="subtle">
-            I did not just write about the pattern. I built and measured it.
+            The field is calling it that because it is no longer just a theory. It is a working
+            system for generating, evaluating, and governing UI.
           </p>
 
           <div className="agentic-table">
@@ -404,7 +407,7 @@ export default function AIxUXCaseStudy() {
 
         <section className="impact">
           <p className="kicker">Impact</p>
-          <h2>One pipeline. Four audiences benefit.</h2>
+          <h2>One system. Multiple audiences benefit.</h2>
           <div className="impact-grid">
             <article>
               <h3>For designers</h3>
@@ -426,7 +429,8 @@ export default function AIxUXCaseStudy() {
 
           <h3 className="validation-title">Where the category is heading</h3>
           <p className="subtle">
-            Industry references support the same direction and similar efficiency outcomes.
+            The work sits firmly inside a broader shift toward AI-first design systems and more
+            governable, context-rich workflows.
           </p>
           <div className="validation-grid">
             {VALIDATION.map((v) => (
@@ -440,7 +444,7 @@ export default function AIxUXCaseStudy() {
 
         <section className="manifesto">
           <h2>
-            The most important design work of the next decade will not be designing for users.
+            The most important design work of the next decade will not be designing only for users.
           </h2>
           <p>It will be designing the systems that make AI useful to teams.</p>
           <small>Interaction design, applied to a new interface layer.</small>

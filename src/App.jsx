@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import UnicornScene from "unicornstudio-react";
 
 const WORDS = ["Artificial Intelligence", "Tech", "Product"];
@@ -22,6 +23,60 @@ const FEATURE_CARDS = [
     accent: "03",
   },
 ];
+
+const SECTIONS = {
+  "UX Case Studies": {
+    title: "UX Case Studies",
+    items: [
+      {
+        title: "KYC Case Study",
+        description: "A deep dive into onboarding flows, compliance, and trust.",
+        url: "#/case-study/kyc",
+      },
+      {
+        title: "Western Union Motion Guidelines",
+        description: "Design system motion rules for reliable, expressive motion.",
+        url: "#/case-study/motion-guidelines",
+      },
+      {
+        title: "Metro plus Service design case study",
+        description: "Service design, systems thinking, and product strategy in enterprise.",
+        url: "#/case-study/metro-plus-service-design",
+      },
+    ],
+  },
+  "AI x UX": {
+    title: "AI x UX",
+    items: [
+      {
+        title: "AI x UX Case Study",
+        description: "The full AI design-system program and production-quality context layer.",
+        url: "#/case-study/aiux-design-system",
+      },
+      {
+        title: "Coming soon",
+        description: "More AI x UX work is on the way.",
+        url: "#",
+      },
+    ],
+  },
+  "UX Minis": {
+    title: "UX Minis",
+    items: [
+      {
+        title: "AI x UX in Fintech",
+        description: "A published guide on AI & UX strategy for financial products.",
+        url: "https://medium.com/design-bootcamp/ai-ux-in-fintech-a-comprehensive-guide-55f84114c0a0",
+        external: true,
+      },
+      {
+        title: "Coming soon",
+        description: "More UX mini stories are coming soon.",
+        url: "#",
+      },
+    ],
+  },
+};
 
 function getSegments(phrase) {
   let charIndex = 0;
@@ -158,6 +213,8 @@ const SwipeScene = memo(function SwipeScene() {
 });
 
 export default function App() {
+  const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState(null);
   const revealSectionRef = useRef(null);
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress: revealProgress } = useScroll({
@@ -188,6 +245,16 @@ export default function App() {
       },
     }),
   };
+
+  const handleCardClick = (title) => {
+    setActiveSection(title);
+  };
+
+  const handleBack = () => {
+    setActiveSection(null);
+  };
+
+  const items = activeSection ? SECTIONS[activeSection]?.items || [] : FEATURE_CARDS;
 
   return (
     <main className="page-shell">
@@ -254,30 +321,63 @@ export default function App() {
           }
         >
           <div className="mesh-header">
-            <p className="mesh-eyebrow">Choose a Path...</p>
+            <p className="mesh-eyebrow">
+              {activeSection ? `Selected: ${activeSection}` : "Choose a Path..."}
+            </p>
             <h2 id="selected-work-title">
-              Pick a path to explore case studies and know more about my work...
+              {activeSection
+                ? `Explore ${activeSection} options and open the right case study.`
+                : "Pick a path to explore case studies and know more about my work..."}
             </h2>
           </div>
 
           <motion.div
+            key={activeSection ?? "root"}
             className="mesh-cards-layer"
             initial={prefersReducedMotion ? false : "hidden"}
-            whileInView={prefersReducedMotion ? undefined : "visible"}
-            viewport={{ once: true, amount: 0.35 }}
+            animate={prefersReducedMotion ? undefined : "visible"}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.1 } },
+            }}
           >
-            {FEATURE_CARDS.map((card, index) => (
+            {items.map((item, index) => (
               <motion.article
                 className="mesh-card"
-                key={card.title}
+                key={item.title}
                 custom={index}
-                variants={cardVariants}
+                variants={{
+                  hidden: { opacity: 0, y: 32, scale: 0.94 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    transition: { duration: 0.6, ease: [0.18, 0.84, 0.32, 1] },
+                  },
+                }}
                 onPointerMove={updateCardGlow}
                 onPointerLeave={resetCardGlow}
+                onClick={() => {
+                  if (activeSection) {
+                    if (item.url && item.url !== "#") {
+                      if (item.external) {
+                        window.open(item.url, "_blank", "noopener,noreferrer");
+                      } else {
+                        window.scrollTo({ top: 0, behavior: "instant" });
+                        navigate(item.url.replace("#", ""));
+                      }
+                    }
+                  } else {
+                    handleCardClick(item.title);
+                  }
+                }}
+                style={{ cursor: item.url !== "#" || !activeSection ? "pointer" : "default" }}
               >
                 <div className="mesh-card-body">
                   <div className="mesh-card-meta">
-                    <span className="mesh-card-accent">{card.accent}</span>
+                    <span className="mesh-card-accent">
+                      {activeSection ? String(index + 1).padStart(2, "0") : item.accent}
+                    </span>
                     <span className="mesh-card-arrow" aria-hidden="true">
                       <svg viewBox="0 0 20 20" fill="none" focusable="false">
                         <path
@@ -303,12 +403,28 @@ export default function App() {
                       </svg>
                     </span>
                   </div>
-                  <h3>{card.title}</h3>
-                  <p>{card.description}</p>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
                 </div>
               </motion.article>
             ))}
           </motion.div>
+
+          {activeSection ? (
+            <motion.div
+              className="mesh-back-row"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.35 }}
+            >
+              <button type="button" className="mesh-back-button" onClick={handleBack}>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M10 13L5 8L10 3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Back
+              </button>
+            </motion.div>
+          ) : null}
         </motion.div>
       </section>
     </main>
