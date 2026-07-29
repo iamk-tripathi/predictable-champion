@@ -1,0 +1,455 @@
+/* ============================================================
+   Dunga Fly Experience — all styles scoped to .df-world
+   Ported from dungyov.com scroll-to-fly experience.
+   No header, no rotating ring. Zone-based takeover.
+   ============================================================ */
+
+/* ── Design tokens ─────────────────────────────────────────── */
+.df-world {
+  --df-fg: #f4f2f0;
+  --df-bg: #121010;
+  --df-muted: rgba(244, 242, 240, 0.55);
+  --df-faint: rgba(244, 242, 240, 0.14);
+  --df-line: rgba(244, 242, 240, 0.18);
+  --df-pad: 32px;
+  --df-font-body: "Space Grotesk", sans-serif;
+  --df-font-display: "Unbounded", sans-serif;
+}
+
+/* ── Portaled fixed world ───────────────────────────────────── */
+.df-world {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  /* Never block scroll events — only specific children get pointer events */
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.65s ease, visibility 0.65s ease;
+}
+
+.df-world.df-active {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ── Canvas ─────────────────────────────────────────────────── */
+.df-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* ── Vignette ───────────────────────────────────────────────── */
+.df-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  background: radial-gradient(transparent 55%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+/* ── Film grain ─────────────────────────────────────────────── */
+.df-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.09'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Section layers ─────────────────────────────────────────── */
+.df-sections {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  color: var(--df-fg);
+  font-family: var(--df-font-body);
+}
+
+.df-layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 96px var(--df-pad);
+  will-change: opacity, transform, filter;
+  opacity: 0;
+  /* pointer-events set inline by the rAF loop (opacity > 0.6 → auto) */
+}
+
+/* ── Chrome overlay ─────────────────────────────────────────── */
+.df-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Interactive chrome children re-enable pointer events */
+.df-overlay button,
+.df-overlay a {
+  pointer-events: auto;
+}
+
+/* Progress rail */
+.df-progress-track {
+  position: absolute;
+  right: var(--df-pad);
+  top: 120px;
+  bottom: 108px;
+  width: 1px;
+  background: var(--df-line);
+}
+
+.df-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: var(--df-fg);
+}
+
+/* Section nav — bottom-left label */
+.df-section-nav {
+  position: absolute;
+  left: var(--df-pad);
+  bottom: 30px;
+}
+
+.df-section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--df-font-body);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--df-muted);
+  transition: color 0.3s ease;
+}
+
+.df-section-label:hover {
+  color: var(--df-fg);
+}
+
+.df-section-label b {
+  color: var(--df-fg);
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Hint — "scroll to fly" */
+.df-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--df-font-body);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(244, 242, 240, 0.6);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.df-hint__line {
+  width: 1px;
+  height: 42px;
+  background: linear-gradient(rgba(244, 242, 240, 0.6), transparent);
+  animation: df-hint-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes df-hint-pulse {
+  0%, 100% { opacity: 0.35; transform: scaleY(0.7); }
+  50%       { opacity: 1;    transform: scaleY(1);   }
+}
+
+/* ── Shared typography ──────────────────────────────────────── */
+.df-eyebrow {
+  font-family: var(--df-font-body);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--df-muted);
+  margin: 0;
+}
+
+.df-section-title {
+  font-family: var(--df-font-display);
+  font-weight: 700;
+  font-size: clamp(28px, 4.4vw, 64px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--df-fg);
+  margin: 0;
+}
+
+/* ============================================================
+   Section layouts — exactly as in portfolio-test/globals.css
+   ============================================================ */
+
+/* Pitch ──────────────────────────────────────────────────────── */
+.df-pitch {
+  max-width: 900px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  align-items: center;
+  color: var(--df-fg);
+}
+
+.df-pitch__body {
+  font-family: var(--df-font-body);
+  font-size: clamp(26px, 3.3vw, 48px);
+  font-weight: 300;
+  line-height: 1.24;
+  margin: 0;
+}
+
+/* The decade ─────────────────────────────────────────────────── */
+.df-decade {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.df-logo-grid {
+  margin-top: 22px;
+  max-width: 980px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 44px 68px;
+}
+
+.df-logo-grid__item img {
+  height: 80px;
+  width: 80px;
+  object-fit: contain;
+  border-radius: 50%;
+  opacity: 0.9;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: block;
+}
+
+.df-logo-grid__item:hover img {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+/* Short story ────────────────────────────────────────────────── */
+.df-short-story {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.df-story-list {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: var(--df-font-body);
+  font-size: clamp(18px, 2vw, 28px);
+  font-weight: 300;
+  color: var(--df-fg);
+}
+
+.df-story-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  justify-content: center;
+}
+
+.df-story-list__marker {
+  color: var(--df-muted);
+  flex-shrink: 0;
+}
+
+/* Talks ──────────────────────────────────────────────────────── */
+.df-talks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.df-talks__eyebrow {
+  margin-top: -8px;
+}
+
+.df-talk-logos {
+  margin-top: 14px;
+  max-width: 980px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 44px 68px;
+}
+
+.df-talk-logo__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.df-talk-logo__item img {
+  height: 80px;
+  width: 80px;
+  object-fit: contain;
+  border-radius: 50%;
+  opacity: 0.9;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: block;
+}
+
+.df-talk-logo__label {
+  font-family: var(--df-font-body);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--df-muted);
+  text-align: center;
+  max-width: 96px;
+  line-height: 1.4;
+}
+
+.df-talk-logo__item:hover img {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+.df-talk-logo__item:hover .df-talk-logo__label {
+  color: var(--df-fg);
+}
+
+/* Manifesto ─────────────────────────────────────────────────── */
+.df-manifesto {
+  max-width: 900px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--df-fg);
+}
+
+.df-manifesto__line {
+  font-family: var(--df-font-body);
+  font-size: clamp(24px, 3vw, 46px);
+  font-weight: 300;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.df-manifesto__line--muted {
+  color: var(--df-muted);
+}
+
+/* Let's talk ────────────────────────────────────────────────── */
+.df-lets-talk {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  color: var(--df-fg);
+}
+
+.df-lets-talk__title {
+  font-family: var(--df-font-display);
+  font-weight: 700;
+  font-size: clamp(56px, 12vw, 180px);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  color: var(--df-fg);
+  margin: 0;
+}
+
+.df-lets-talk__email {
+  font-family: var(--df-font-body);
+  font-size: clamp(20px, 2.4vw, 34px);
+  font-weight: 300;
+  color: var(--df-fg);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease;
+  pointer-events: auto;
+}
+
+.df-lets-talk__email:hover {
+  border-color: var(--df-fg);
+}
+
+.df-lets-talk__foot {
+  margin-top: 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--df-font-body);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--df-muted);
+}
+
+.df-lets-talk__foot span:last-child {
+  font-family: var(--df-font-display);
+  letter-spacing: 0.12em;
+  color: var(--df-fg);
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .df-world {
+    --df-pad: 20px;
+  }
+
+  .df-layer {
+    padding: 90px var(--df-pad);
+  }
+
+  .df-progress-track {
+    display: none;
+  }
+
+  .df-hint {
+    display: none;
+  }
+
+  .df-talk-card {
+    width: 100%;
+    max-width: 360px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .df-hint__line {
+    animation: none;
+  }
+}

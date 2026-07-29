@@ -2,6 +2,7 @@ import React, { memo, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import UnicornScene from "unicornstudio-react";
+import DungaFly from "./DungaFly";
 
 const WORDS = ["Artificial Intelligence", "Tech", "Product"];
 const PHRASE_TRANSITION_MS = 1200;
@@ -427,6 +428,8 @@ export default function App() {
           ) : null}
         </motion.div>
       </section>
+
+      <DungaFly />
     </main>
   );
 }
