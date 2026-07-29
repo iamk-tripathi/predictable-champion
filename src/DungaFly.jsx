@@ -221,6 +221,7 @@ export default function DungaFly() {
   const starRef = useRef(null);
   const targetProgress = useRef(0);
   const smoothProgress = useRef(0);
+  const inZoneRef = useRef(false);
   const [active, setActive] = useState(0);
   const [inZone, setInZone] = useState(false);
 
@@ -234,10 +235,11 @@ export default function DungaFly() {
       const scrollMax = zone.offsetHeight - window.innerHeight;
       const localScroll = window.scrollY - zoneTop;
       targetProgress.current = clamp(localScroll / Math.max(1, scrollMax));
-      setInZone(
+      const inRange =
         window.scrollY >= zoneTop - 80 &&
-          window.scrollY <= zoneTop + scrollMax + 80
-      );
+          window.scrollY <= zoneTop + scrollMax + 80;
+      inZoneRef.current = inRange;
+      setInZone(inRange);
     };
 
     readScroll();
@@ -265,12 +267,12 @@ export default function DungaFly() {
           1 +
           d * 0.06
         ).toFixed(3)})`;
-        el.style.pointerEvents = opacity > 0.6 ? "auto" : "none";
+        el.style.pointerEvents = (inZoneRef.current && opacity > 0.6) ? "auto" : "none";
         el.style.filter =
           opacity < 0.9
             ? `blur(${((1 - opacity) * 6).toFixed(2)}px)`
             : "none";
-        el.style.visibility = opacity < 0.01 ? "hidden" : "visible";
+        el.style.visibility = (inZoneRef.current && opacity >= 0.01) ? "visible" : "hidden";
       }
 
       if (fillRef.current)
