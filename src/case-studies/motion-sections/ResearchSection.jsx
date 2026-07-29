@@ -76,10 +76,13 @@ export default function ResearchSection() {
 
           {/* FigJam board from brainstorming */}
           <RevealOnScroll delay={0.1}>
-            <div className="mo-placeholder" style={{ aspectRatio: "16 / 9", marginTop: 40 }}>
-              <span className="mo-placeholder__label">
-                FigJam Board from our brainstorming session
-              </span>
+            <div className="mo-figma-embed" style={{ aspectRatio: "16 / 9", marginTop: 40 }}>
+              <iframe
+                src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fboard%2FEJxxj0J5XoqH5Humx9RnBv%2FMicrointeractions%3Fnode-id%3D0-1%26p%3Df%26t%3DRhRbZhVMTAZBGabv-0"
+                allowFullScreen
+                title="FigJam Brainstorming Session"
+                loading="lazy"
+              />
             </div>
           </RevealOnScroll>
 

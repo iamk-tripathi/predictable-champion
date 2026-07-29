@@ -161,10 +161,13 @@ export default function BeatsSystemSection() {
           <RevealOnScroll delay={0.16}>
             <div className="mo-tokens-row">
               <div className="mo-tokens-row__placeholder">
-                <div className="mo-placeholder" style={{ aspectRatio: "16 / 9" }}>
-                  <span className="mo-placeholder__label">
-                    Motion Design Tokens & Easing Specifications
-                  </span>
+                <div className="mo-figma-embed" style={{ aspectRatio: "16 / 9" }}>
+                  <iframe
+                    src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FtkcZR7wguSQiQ3nGCA3ZpW%2FTest-experiments%3Fnode-id%3D618-32647%26t%3DIN3Eq0dEKyCM5D3l-4"
+                    allowFullScreen
+                    title="Motion Design Tokens & Easing Specifications"
+                    loading="lazy"
+                  />
                 </div>
               </div>
               <div className="mo-tokens-row__video">

@@ -44,10 +44,13 @@ export default function SeizingSection() {
           </RevealOnScroll>
 
           <RevealOnScroll delay={0.12}>
-            <div className="mo-placeholder" style={{ aspectRatio: "16 / 9", marginTop: 48 }}>
-              <span className="mo-placeholder__label">
-                Snapshot of the final Motion Guidelines
-              </span>
+            <div className="mo-figma-embed" style={{ aspectRatio: "16 / 9", marginTop: 48 }}>
+              <iframe
+                src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FtkcZR7wguSQiQ3nGCA3ZpW%2FTest-experiments%3Fnode-id%3D25-810%26t%3DIN3Eq0dEKyCM5D3l-4"
+                allowFullScreen
+                title="Final Motion Guidelines"
+                loading="lazy"
+              />
             </div>
           </RevealOnScroll>
         </div>
