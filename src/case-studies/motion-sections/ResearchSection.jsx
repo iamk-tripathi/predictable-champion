@@ -78,7 +78,7 @@ export default function ResearchSection() {
           <RevealOnScroll delay={0.1}>
             <div className="mo-figma-embed" style={{ aspectRatio: "16 / 9", marginTop: 40 }}>
               <iframe
-                src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fboard%2FEJxxj0J5XoqH5Humx9RnBv%2FMicrointeractions%3Fnode-id%3D0-1%26p%3Df%26t%3DRhRbZhVMTAZBGabv-0"
+                src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fboard%2Fo9Mf8Bl2J5AU6C3qEfn0sN%2FMicrointeractions--Copy-%3Ft%3DrRb34qukEJCnR0Gt-6"
                 allowFullScreen
                 title="FigJam Brainstorming Session"
                 loading="lazy"
