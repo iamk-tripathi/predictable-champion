@@ -112,7 +112,7 @@ function Hero({ onOpenStory }) {
           <p className="svc-hero__lede">
             Metro+ began as a brief for a last-mile buggy app. It ended as a
             phygital coordination service across three modes of transit, four
-            stakeholder groups, and one very stubborn variable — human beings.
+            stakeholder groups, and one very stubborn variable: human beings.
           </p>
         </Reveal>
 
@@ -127,7 +127,7 @@ function Hero({ onOpenStory }) {
 
         <Reveal delay={0.42}>
           <p className="svc-hero__pitch">
-            <span className="svc-hero__pitch-mark">Thesis —</span>
+            <span className="svc-hero__pitch-mark">Thesis:</span>
             The screen is not the service. The service is the
             <em> invisible layer </em> of processes, actors and metrics that
             decides whether the screen is even the right answer. This case
@@ -155,7 +155,7 @@ function Fact({ k, v }) {
   );
 }
 
-// ---------- 2. Discipline framing -----------------------------------------
+// ---------- 6. Quarter and a Half User (named concept) -------------------
 
 function Discipline() {
   return (
@@ -175,8 +175,8 @@ function Discipline() {
           <div className="svc-frame-grid__side">
             <Reveal delay={0.1}>
               <p className="svc-body">
-                Digital transformation programs fail — the industry number is
-                <strong> 84% </strong>— not because the interface is wrong,
+                Digital transformation programs fail. The industry number is
+                <strong> 84% </strong>not because the interface is wrong,
                 but because the invisible service around the interface is
                 un-designed. Metro+ set out to make that service visible and
                 accountable.
@@ -187,9 +187,9 @@ function Discipline() {
               <p className="svc-body">
                 Service design is used here as a tool for
                 <strong> alignment</strong>, <strong> research
-                rigor</strong>, and <strong> metric honesty</strong> — not as
-                a deliverable. The blueprint, the persona, the phygital pole —
-                they are consequences, not the point.
+                rigor</strong>, and <strong> metric honesty</strong>, not as
+                a deliverable. The blueprint, the persona, and the phygital pole
+                are consequences, not the point.
               </p>
             </Reveal>
           </div>
@@ -205,7 +205,7 @@ function Discipline() {
             <Principle
               n="02"
               title="Get the big picture"
-              body="Research the whole ecosystem — passengers, drivers, transit, city."
+              body="Research the whole ecosystem: passengers, drivers, transit, and the city."
             />
             <Principle
               n="03"
@@ -215,7 +215,7 @@ function Discipline() {
             <Principle
               n="04"
               title="Think in systems"
-              body="Design for adjacent platforms — metro, autos, corporates, BMC."
+              body="Design for adjacent platforms: metro, autos, corporates, and BMC."
             />
             <Principle
               n="05"
@@ -345,7 +345,7 @@ function Process() {
         <Reveal>
           <h2 className="svc-h2">
             Seven phases.<br />
-            One question driving all of them —{" "}
+            One question driving all of them:{" "}
             <em>can this be made predictable?</em>
           </h2>
         </Reveal>
@@ -354,7 +354,7 @@ function Process() {
           <p className="svc-body">
             The programme ran over the ePGD Design of Interactive Products
             semester. Each phase produced one load-bearing artifact that fed
-            the next — no phase was decorative, none were skipped. The map
+            the next. No phase was decorative, and none were skipped. The map
             below is the exact spine of the source deck.
           </p>
         </Reveal>
@@ -374,11 +374,6 @@ function Process() {
                     <li key={m}>{m}</li>
                   ))}
                 </ul>
-
-                <footer className="svc-process__foot">
-                  <span className="svc-process__artifact">{p.artifact}</span>
-                  <span className="svc-process__slides">{p.slides}</span>
-                </footer>
               </li>
             </Reveal>
           ))}
@@ -386,12 +381,12 @@ function Process() {
 
         <Reveal delay={0.5}>
           <p className="svc-manager-note">
-            <span className="svc-manager-note__k">Method note —</span>
+            <span className="svc-manager-note__k">Method note:</span>
             The seven phases sit inside a Double-Diamond outer shape (Frame /
             Discover open; Synthesise / Reframe close; Prototype / Validate
             open again; Position closes). What service design adds on top is
             the discipline of naming the <em>invisible artifact</em> at each
-            phase — not the deck slide, but the thing the organisation now
+            phase. Not the deck slide, but the thing the organisation now
             has to hold itself to.
           </p>
         </Reveal>
@@ -479,9 +474,9 @@ function BriefRevised() {
 
         <Reveal delay={0.45}>
           <p className="svc-manager-note">
-            <span className="svc-manager-note__k">Why the reframe mattered —</span>
+            <span className="svc-manager-note__k">Why the reframe mattered:</span>
             The scope of a design programme is set at the brief. Widening the
-            brief responsibly — with data, not opinion — is the highest-leverage
+            brief responsibly, with data rather than opinion, is the highest-leverage
             move available to a design team. Everything after this page is
             downstream of that move.
           </p>
@@ -494,15 +489,6 @@ function BriefRevised() {
 // ---------- 4. Systems View / Stakeholder Ecosystem ------------------------
 
 function Ecosystem() {
-  const stakeholders = [
-    { id: "passenger", label: "Passenger", note: "Wants predictability, low cost, one plan" },
-    { id: "driver", label: "Driver", note: "Wants steady income, less empty running" },
-    { id: "metro", label: "Metro Rail", note: "Wants ridership growth, capacity utilisation" },
-    { id: "corp", label: "Corporates", note: "Wants staff punctuality, ESG, cost relief" },
-    { id: "bmc", label: "City / BMC", note: "Wants throughput, safety, cleaner air" },
-    { id: "ops", label: "Ops & Poles", note: "Wants uptime, offline resilience" },
-  ];
-
   return (
     <section className="svc-section svc-section--ecosystem">
       <div className="svc-container">
@@ -522,25 +508,6 @@ function Ecosystem() {
             The service had to hold all six definitions at once.
           </p>
         </Reveal>
-
-        <div className="svc-orbit" role="img" aria-label="Stakeholder ecosystem for Metro+">
-          <div className="svc-orbit__ring svc-orbit__ring--1" aria-hidden="true" />
-          <div className="svc-orbit__ring svc-orbit__ring--2" aria-hidden="true" />
-          <div className="svc-orbit__core">
-            <span>Metro+</span>
-            <small>coordination service</small>
-          </div>
-          {stakeholders.map((s, i) => (
-            <div
-              key={s.id}
-              className={`svc-orbit__node svc-orbit__node--${i + 1}`}
-              style={{ "--i": i, "--n": stakeholders.length }}
-            >
-              <span className="svc-orbit__label">{s.label}</span>
-              <span className="svc-orbit__note">{s.note}</span>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -556,7 +523,7 @@ const PERSONAS = [
     name: "Samaiyra",
     meta: "28 · Product Manager, Infosys · Mumbai",
     story:
-      "Samaiyra travels daily for work. Her commute decisions are made in real-time and shaped by time, comfort and cost — she moves between metro, cab and shared rickshaw depending on how the day is going. She earlier used auto in the evening, but faced heavy driver rejection in traffic.",
+      "Samaiyra travels daily for work. Her commute decisions are made in real-time and shaped by time, comfort and cost. She moves between metro, cab and shared rickshaw depending on how the day is going. She earlier used auto in the evening, but faced heavy driver rejection in traffic.",
     wants: [
       "A reliable, predictable commute",
       "Comfortable, cost-effective travel",
@@ -580,12 +547,12 @@ const PERSONAS = [
     name: "Ramesh Gupta Ji",
     meta: "30 · Rickshaw driver · Mumbai",
     story:
-      "Ramesh Gupta Ji is a rickshaw driver whose day revolves around earning a stable income, reading commuter demand, and balancing 12\u201316 hour shifts with family life. He takes pride in his work and aspires to do better — the current TISS benchmark for Ola/Uber drivers is ₹19,667 gross / ₹10\u201313k net a month.",
+      "Ramesh Gupta Ji is a rickshaw driver whose day revolves around earning a stable income, reading commuter demand, and balancing 12\u201316 hour shifts with family life. He takes pride in his work and aspires to do better. The current TISS benchmark for Ola/Uber drivers is ₹19,667 gross / ₹10\u201313k net a month.",
     wants: [
       "Stable, predictable livelihood",
       "Transparent demand signal",
       "Clear shifts and routing",
-      "Dignity of labour — rest, breaks",
+      "Dignity of labour, rest, breaks",
     ],
     pains: [
       "Empty runs eat the day’s margin",
@@ -616,9 +583,9 @@ function Research() {
           <p className="svc-body">
             We ran 22 rider interviews, 8 driver ride-alongs, three
             observational sessions at metro exits, and a diary study over ten
-            commutes. What surfaced was not a list of features — it was a
+            commutes. What surfaced was not a list of features. It was a
             set of <strong>variables</strong> that the campus prototype had
-            never been forced to solve for — and two human beings the
+            never been forced to solve for, and two human beings the
             whole service would have to hold up.
           </p>
         </Reveal>
@@ -666,7 +633,7 @@ function Research() {
           <VariableCard
             n="V4"
             title="Booking method drift"
-            body="Users default to whichever channel is fastest — pole, app, web — and expect state to sync."
+            body="Users default to whichever channel is fastest, whether pole, app, or web, and expect state to sync."
           />
         </div>
 
@@ -677,7 +644,7 @@ function Research() {
               persona="Field note · MP1:12"
             />
             <RiderQuote
-              text="Rickshaw would take me from MIDC pickup pole to Hutatma pole — I missed the metro leg entirely."
+              text="Rickshaw would take me from MIDC pickup pole to Hutatma pole. I missed the metro leg entirely."
               persona="Rider observation"
             />
             <RiderQuote
@@ -788,7 +755,7 @@ function RiderQuote({ text, persona }) {
   );
 }
 
-// ---------- 6. The Half User (signature contribution) --------------------
+// ---------- 6. Quarter and a Half User (named concept) -------------------
 
 function HalfUser() {
   return (
@@ -796,115 +763,39 @@ function HalfUser() {
       <div className="svc-container">
         <SectionLabel index={6} tone="paper">A named concept</SectionLabel>
 
-        <div className="svc-halfuser__grid">
-          <div className="svc-halfuser__copy">
-            <Reveal>
-              <h2 className="svc-h2 svc-h2--onDark">
-                The Half User —<br />
-                <em>the invisible layer,</em> named.
-              </h2>
-            </Reveal>
+        <div className="svc-halfuser__copy svc-halfuser__copy--solo">
+          <Reveal>
+            <h2 className="svc-h2 svc-h2--onDark">
+              The <em>Quarter</em> and the <em>Half</em> User.
+            </h2>
+          </Reveal>
 
-            <Reveal delay={0.1}>
-              <p className="svc-body svc-body--onDark">
-                The service doesn't know when a user will arrive. But the
-                moment they book, it knows they <em>intend</em> to. That
-                intent is a signal — and the closer they get to the pole,
-                the stronger and heavier that signal becomes.
-              </p>
-            </Reveal>
+          <Reveal delay={0.1}>
+            <p className="svc-body svc-body--onDark">
+              A user isn’t 0 or 1. The moment they book, the service reads
+              that intent as a signal. It does not wait for certainty; it
+              acts on partial commitment.
+            </p>
+          </Reveal>
 
-            <Reveal delay={0.2}>
-              <p className="svc-body svc-body--onDark">
-                <strong>The model.</strong> Three concentric rings surround
-                every pole. At <strong>150 m</strong> — a{" "}
-                <em>Quarter User</em>: booked from home, holding ¼ of a seat
-                in pooled demand. Quarter users decide which vehicle type to
-                ready — but nothing leaves the station yet. At{" "}
-                <strong>75 m</strong> — a <em>Half User</em>: now moving,
-                commitment rising. This crossing triggers dispatch. At{" "}
-                <strong>20 m</strong> — a <em>Full User</em>: one seat, one
-                person, certain arrival. The vehicle is already ≤ 2 minutes
-                away.
-              </p>
-            </Reveal>
+          <Reveal delay={0.2}>
+            <p className="svc-body svc-body--onDark">
+              So riders are treated as fractions. Far from the pole they are a
+              <em> Quarter User</em>, contributing to pooled demand and helping
+              decide what vehicle should be readied. Once they cross the outer
+              boundary, they become a <em>Half User</em>; commitment rises and
+              dispatch can be triggered. The interactive mechanic below shows
+              exactly how that signal accumulates and when the system acts.
+            </p>
+          </Reveal>
 
-            <Reveal delay={0.3}>
-              <p className="svc-manager-note svc-manager-note--onDark">
-                <span className="svc-manager-note__k">Why it travelled —</span>
-                Naming a concept the team can rally around is a design
-                artifact in its own right. Quarter / Half / Full User gave
-                product, ops and engineering a shared unit of work; it moved
-                into the roadmap without needing translation.
-              </p>
-            </Reveal>
-          </div>
-
-          <div className="svc-halfuser__viz" aria-hidden="true">
-            <svg
-              viewBox="0 0 280 280"
-              className="svc-halfuser__svg"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {/* Zone fills */}
-              <circle cx={140} cy={140} r={128} className="svc-radar__zone svc-radar__zone--q" />
-              <circle cx={140} cy={140} r={82}  className="svc-radar__zone svc-radar__zone--h" />
-              <circle cx={140} cy={140} r={32}  className="svc-radar__zone svc-radar__zone--f" />
-
-              {/* Rings */}
-              <circle cx={140} cy={140} r={128} className="svc-radar__ring" />
-              <circle cx={140} cy={140} r={82}  className="svc-radar__ring" />
-              <circle cx={140} cy={140} r={32}  className="svc-radar__ring" />
-
-              {/* Distance tick + label — upper-right of each ring */}
-              {[
-                { r: 128, label: "150 m" },
-                { r: 82,  label: "75 m"  },
-                { r: 32,  label: "20 m"  },
-              ].map(({ r, label }) => {
-                const ang = (-38 * Math.PI) / 180;
-                const x0 = 140 + r * Math.cos(ang);
-                const y0 = 140 + r * Math.sin(ang);
-                const x1 = 140 + (r + 14) * Math.cos(ang);
-                const y1 = 140 + (r + 14) * Math.sin(ang);
-                return (
-                  <g key={label}>
-                    <line x1={x0} y1={y0} x2={x1} y2={y1} className="svc-radar__tick" />
-                    <text x={x1 + 4} y={y1 + 3} className="svc-radar__meter">{label}</text>
-                  </g>
-                );
-              })}
-
-              {/* Fraction labels — stacked top of each ring */}
-              <text x={140} y={6}   className="svc-radar__frac svc-radar__frac--q" textAnchor="middle">¼</text>
-              <text x={140} y={54}  className="svc-radar__frac svc-radar__frac--h" textAnchor="middle">½</text>
-              <text x={140} y={104} className="svc-radar__frac svc-radar__frac--f" textAnchor="middle">1</text>
-
-              {/* Pole at centre */}
-              <g className="svc-radar__pole" transform="translate(140,140)">
-                <circle cx={0} cy={0} r={8} />
-                <circle cx={0} cy={0} r={3} className="svc-radar__pole-core" />
-              </g>
-
-              {/* Representative user dot — sitting in the half-user ring */}
-              <circle cx={195} cy={105} r={5} className="svc-radar__dot--h" />
-            </svg>
-
-            <ul className="svc-halfuser__legend">
-              <li>
-                <span className="svc-dot" style={{ background: "rgba(255,181,71,0.42)" }} />
-                ¼ · 150 m · Vehicle type decided
-              </li>
-              <li>
-                <span className="svc-dot" style={{ background: "rgba(255,181,71,0.72)" }} />
-                ½ · 75 m · Vehicle dispatched
-              </li>
-              <li>
-                <span className="svc-dot svc-dot--intent" />
-                1 · 20 m · Vehicle ≤ 2 min away
-              </li>
-            </ul>
-          </div>
+          <Reveal delay={0.3}>
+            <p className="svc-manager-note svc-manager-note--onDark">
+              <span className="svc-manager-note__k">Why it mattered:</span>
+              Quarter / Half / Full User gave product, ops and engineering a
+              shared language for demand, dispatch and wait-time promises.
+            </p>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -920,7 +811,7 @@ const MECHANIC_STATES = [
     label: "Quarter User",
     ring: "150 m +",
     user:
-      "Books from home, 150 m or more from the pole. In a 3-seater auto they hold ¼ of a seat — because they have paid and pledged the journey.",
+      "Books from home, 150 m or more from the pole. In a 3-seater auto they hold ¼ of a seat because they have paid and pledged the journey.",
     system:
       "Aggregated ¼-users decide which vehicle type to ready. Nothing leaves the metro station yet.",
   },
@@ -932,7 +823,7 @@ const MECHANIC_STATES = [
     user:
       "Crosses the pole’s outer 75 m ring. Proximity raises commitment, so their weight in the demand signal rises.",
     system:
-      "The pole’s pooled demand crosses a threshold — a vehicle is triggered to move toward it.",
+      "The pole’s pooled demand crosses a threshold, so a vehicle is triggered to move toward it.",
   },
   {
     id: "full",
@@ -940,7 +831,7 @@ const MECHANIC_STATES = [
     label: "Full User",
     ring: "20 m",
     user:
-      "Arrives within 20 m of the pole. Intent is now certain — a whole seat, a whole user.",
+      "Arrives within 20 m of the pole. Intent is now certain: a whole seat, a whole user.",
     system:
       "The vehicle is at most 2 minutes away, or already there. Wait time collapses to near zero.",
   },
@@ -1061,8 +952,8 @@ function HalfUserMechanic() {
 
         <Reveal delay={0.1}>
           <p className="svc-body svc-body--onDark">
-            The human factors that make a commuter unpredictable — when they
-            leave, how far they are, whether they’ll actually show — vary from
+            The human factors that make a commuter unpredictable, from when they
+            leave to how far they are and whether they’ll actually show, vary from
             person to person. So the service doesn’t wait for certainty. It
             reads <em>partial</em> commitment and acts on it. Two questions
             frame the whole model:
@@ -1079,7 +970,7 @@ function HalfUserMechanic() {
             </li>
             <li className="svc-keyq__item">
               <span className="svc-keyq__q">
-                How does a driver know which pole has <em>real</em> demand — and
+                How does a driver know which pole has <em>real</em> demand, and
                 which vehicle to send?
               </span>
             </li>
@@ -1121,7 +1012,7 @@ function HalfUserMechanic() {
               demand<sub>pole</sub> = Σ weight<sub>user</sub>
             </span>
             <span className="svc-formula__note">
-              where weight rises with proximity — ¼ → ½ → 1 — and a vehicle is
+              where weight rises with proximity from ¼ to ½ to 1, and a vehicle is
               dispatched the moment the sum crosses the capacity threshold for
               the chosen vehicle type.
             </span>
@@ -1138,7 +1029,7 @@ function HalfUserMechanic() {
           <PayoffCard
             k="Predictability"
             v="Vehicle in sight"
-            note="The rider sees a committed vehicle already moving — the wait stops being a guess."
+            note="The rider sees a committed vehicle already moving, so the wait stops being a guess."
           />
           <PayoffCard
             k="Wait time"
@@ -1285,7 +1176,7 @@ function Phygital() {
       k: "Pole",
       title: "The physical anchor",
       body:
-        "A weather-proof, low-res, offline-capable display with 4 ATM-style buttons and a wide-angle webcam. The pole is the service’s promise made physical — you don’t need the app to be a customer.",
+        "A weather-proof, low-res, offline-capable display with 4 ATM-style buttons and a wide-angle webcam. The pole is the service’s promise made physical. You don’t need the app to be a customer.",
       stat: "25 poles / metro station · 2 km radius",
     },
     {
@@ -1293,7 +1184,7 @@ function Phygital() {
       k: "Rider App",
       title: "The invisible companion",
       body:
-        "Plan, pledge, pay, arrive. The rider app’s job is to disappear once the plan is set — silent unless the plan changes. Silence is a design goal.",
+        "Plan, pledge, pay, arrive. The rider app’s job is to disappear once the plan is set, staying silent unless the plan changes. Silence is a design goal.",
       stat: "5 screens · 1 primary action per screen",
     },
     {
@@ -1328,7 +1219,7 @@ function Phygital() {
 
         <Reveal delay={0.1}>
           <p className="svc-body">
-            Every touchpoint reads and writes to the same state — the
+            Every touchpoint reads and writes to the same state, the
             Half-User pledge. That constraint is what made the phygital system
             feel like one product instead of four.
           </p>
@@ -1390,7 +1281,7 @@ function Validation() {
         <Reveal delay={0.1}>
           <p className="svc-body">
             Twelve riders, six drivers, three key questions. Each round moved
-            a number, not an opinion. Testing was calibration — the moment the
+            a number, not an opinion. Testing was calibration. It was the moment the
             service was allowed to be wrong in front of real people and get
             better because of it.
           </p>
@@ -1454,9 +1345,9 @@ function Commercial() {
 
         <Reveal delay={0.35}>
           <p className="svc-manager-note svc-manager-note--onDark">
-            <span className="svc-manager-note__k">The number that mattered —</span>
+            <span className="svc-manager-note__k">The number that mattered:</span>
             The headline number is not the ₹34.85 Cr. It is the
-            <em> predictability index </em> — the share of Half-User pledges
+            <em> predictability index </em>, the share of Half-User pledges
             that converted within their promised window. Every commercial
             number follows from that one.
           </p>
@@ -1495,12 +1386,12 @@ function Practice() {
     {
       k: "Interaction & information design",
       body:
-        "A journey-strip pattern, the pole’s 4-button IA and the driver-app demand map — one shared state across four touchpoints.",
+        "A journey-strip pattern, the pole’s 4-button IA and the driver-app demand map, with one shared state across four touchpoints.",
     },
     {
       k: "Design system tokens",
       body:
-        "Phygital tokens — pole type, tap targets, offline states — defined so future DBO bidders could inherit the vocabulary intact.",
+        "Phygital tokens for pole type, tap targets, and offline states were defined so future DBO bidders could inherit the vocabulary intact.",
     },
     {
       k: "Cross-functional facilitation",
@@ -1538,7 +1429,7 @@ function Practice() {
 
         <Reveal delay={0.1}>
           <p className="svc-body">
-            The methods, artifacts and decisions the case study is built on —
+            The methods, artifacts and decisions the case study is built on.
             each one is a load-bearing piece of the final service.
           </p>
         </Reveal>
@@ -1570,7 +1461,7 @@ function Close() {
         <Reveal delay={0.1}>
           <p className="svc-close__line">
             Good service design makes the invisible
-            <em> visible </em>— and holds the whole system accountable to it.
+            <em> visible </em>, and holds the whole system accountable to it.
           </p>
         </Reveal>
         <Reveal delay={0.2}>

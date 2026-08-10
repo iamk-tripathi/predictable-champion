@@ -71,7 +71,7 @@ const SCENES = [
       "The needs and wants of metro travellers",
       "How the driver ecosystem functions in a shared space",
       "How IITB manages its internal buggy ecosystem",
-      "The vehicle fleet in use — and its limitations",
+      "The vehicle fleet in use, and its limitations",
     ],
     foot: "…and many more questions that needed answering.",
   },
@@ -93,7 +93,7 @@ const SCENES = [
       },
       {
         k: "Vehicle integrity",
-        v: "A buggy carries 15 on smooth, controlled campus roads. On Indian roads — traffic, potholes, low speed — it’s fragile transport.",
+        v: "A buggy carries 15 on smooth, controlled campus roads. On Indian roads, with traffic, potholes, and low speed, it’s fragile transport.",
       },
       {
         k: "Predictability",
@@ -120,7 +120,7 @@ const SCENES = [
     beats: [
       "The people to design for were Drivers and Passengers. We built a contextual inquiry for each.",
       "We went into the field and interviewed 16+ people across both groups.",
-      "Every statement was synthesised into insights and breakdowns — and design ideas were derived from them.",
+      "Every statement was synthesised into insights and breakdowns. Design ideas were derived from them.",
     ],
     artifacts: [
       { label: "Field interview · driver, in context", kind: "photo" },
@@ -156,12 +156,23 @@ const SCENES = [
     ],
   },
   {
+    id: "7.5",
+    kind: "problemPanel",
+    mark: "The problem, in one line",
+    lines: [
+      "Drivers can’t estimate the scale of demand.",
+      "Passengers don’t know how long to wait.",
+    ],
+    foot:
+      "Between them sits a rule-of-the-jungle city and an unregulated web of shared-mobility hacks. Both sides pay for the gap in time, money and dignity. The rest of this case study is one attempt to close it.",
+  },
+  {
     id: "8",
     kind: "problem",
     eyebrow: "One problem, in focus",
     question:
       "How do we guarantee that whenever a passenger reaches a pole, a vehicle is never more than 2 minutes away?",
-    note: "Assumption — the passenger has already booked a Metro+ vehicle from home.",
+    note: "Assumption: the passenger has already booked a Metro+ vehicle from home.",
   },
   {
     id: "9",
@@ -169,7 +180,7 @@ const SCENES = [
     eyebrow: "Route predictability",
     headline: "To promise predictability, first define the routes",
     body:
-      "So we studied the routes the campus commute already runs — and found they overlap. Around one metro station, ~25 poles share overlapping segments. It looks like this.",
+      "So we studied the routes the campus commute already runs, and found they overlap. Around one metro station, ~25 poles share overlapping segments. It looks like this.",
     artifact: { label: "Physical route model", kind: "photo" },
   },
   {
@@ -177,14 +188,14 @@ const SCENES = [
     kind: "figma",
     artifact: { label: "Route map · poles linked to routes", node: "1088-2496" },
     caption:
-      "Poles connect to routes with the metro station as their base — and a single pole can belong to multiple routes. (Pole & route placement is decided by K-means; more on that later.)",
+      "Poles connect to routes with the metro station as their base, and a single pole can belong to multiple routes. (Pole & route placement is decided by K-means; more on that later.)",
   },
   {
     id: "9.2",
     kind: "figma",
     artifact: { label: "A pole surges", node: "1088-2488" },
     caption:
-      "Say a pole suddenly sees a surge and tells the station. That pole’s vehicle is already full — so why should it travel on to Pole 4 and Pole 6?",
+      "Say a pole suddenly sees a surge and tells the station. That pole’s vehicle is already full, so why should it travel on to Pole 4 and Pole 6?",
   },
   {
     id: "9.3",
@@ -192,7 +203,7 @@ const SCENES = [
     eyebrow: "How it’s handled today",
     headline: "A WhatsApp group",
     body:
-      "Our driver persona still has to follow the route. They flag a surge to supervisors on a WhatsApp group — a completely unorganised method.",
+      "Our driver persona still has to follow the route. They flag a surge to supervisors on a WhatsApp group, which is a completely unorganised method.",
     artifact: { label: "Artifact 2 · driver WhatsApp group", kind: "screenshot" },
   },
   {
@@ -208,12 +219,12 @@ const SCENES = [
     kind: "figma",
     artifact: { label: "Pole detached & served independently", node: "1088-2494" },
     caption:
-      "Pole 10 is detached from the loop and served on its own — it’s full now — and the nodes after it are re-attached to a different route.",
+      "Pole 10 is detached from the loop and served on its own because it’s full now, and the nodes after it are re-attached to a different route.",
   },
   {
     id: "10",
     kind: "statement",
-    headline: "The solution looks perfect — but it has a catch.",
+    headline: "The solution looks perfect, but it has a catch.",
     center: true,
   },
   {
@@ -224,7 +235,7 @@ const SCENES = [
     items: [
       "You book your ride, but a broken elevator delays you at your pickup point.",
       "You head downstairs and remember you didn’t kiss your kid goodbye.",
-      "You left without your work laptop. (More often than you’d think — I can confirm.)",
+      "You left without your work laptop. (More often than you’d think. I can confirm.)",
     ],
     close: "How do we still give them predictability?",
   },
@@ -232,7 +243,7 @@ const SCENES = [
     id: "11.1",
     kind: "statement",
     headline:
-      "Either the vehicle waits a long time — or the user loses their predictability.",
+      "Either the vehicle waits a long time, or the user loses their predictability.",
     center: true,
   },
   {
@@ -258,7 +269,7 @@ const SCENES = [
     id: "13.1",
     kind: "statement",
     body:
-      "Remember — the pole tells us how many people are coming to it. That defines its traffic, and vehicles are sent (and routes change) accordingly.",
+      "Remember, the pole tells us how many people are coming to it. That defines its traffic, and vehicles are sent (and routes change) accordingly.",
   },
   {
     id: "13.2",
@@ -284,19 +295,19 @@ const SCENES = [
     id: "13.4",
     kind: "quote",
     quote:
-      "So the service doesn’t wait for certainty. It reads partial commitment — a booking — and acts on it.",
+      "So the service doesn’t wait for certainty. It reads partial commitment, a booking, and acts on it.",
   },
   {
     id: "13.5",
     kind: "definitions",
-    headline: "Each pole has two boundaries — 20 m and 75 m",
+    headline: "Each pole has two boundaries: 20 m and 75 m",
     defs: [
       {
         frac: "¼",
         name: "Quarter User",
         ring: "beyond 75 m",
         desc:
-          "Books from home, 75 m or more from the pole. In a 3-seater they hold ¼ of a seat — they’ve paid and pledged the journey.",
+          "Books from home, 75 m or more from the pole. In a 3-seater they hold ¼ of a seat because they’ve paid and pledged the journey.",
       },
       {
         frac: "½",
@@ -310,7 +321,7 @@ const SCENES = [
         name: "Full User",
         ring: "crosses 20 m",
         desc:
-          "Arrives within 20 m of the pole. Intent is now certain — a whole seat, a whole user.",
+          "Arrives within 20 m of the pole. Intent is now certain: a whole seat, a whole user.",
       },
     ],
     subtext: "Scroll for the visualisation ↓",
@@ -334,12 +345,12 @@ const SCENES = [
       {
         term: "Dijkstra",
         desc:
-          "Decides which pole can be detached and served independently — and re-attaches the following nodes to other route loops so none go unserved.",
+          "Decides which pole can be detached and served independently, and re-attaches the following nodes to other route loops so none go unserved.",
       },
       {
         term: "Vehicle Routing Problem",
         desc:
-          "Decides which vehicle leaves for which pole — the classic CS method delivery platforms rely on.",
+          "Decides which vehicle leaves for which pole. It uses the classic CS method that delivery platforms rely on.",
       },
     ],
   },
@@ -369,7 +380,7 @@ const SCENES = [
     id: "15",
     kind: "closing",
     quote:
-      "Good service design makes the invisible visible — and holds the whole system accountable to it.",
+      "Good service design makes the invisible visible, and holds the whole system accountable to it.",
   },
 ];
 
@@ -566,6 +577,17 @@ function SceneBody({ scene, radarRef }) {
           <h2 className="mn-problem__q">{scene.question}</h2>
           <p className="mn-problem__note">{scene.note}</p>
         </div>
+      );
+    case "problemPanel":
+      return (
+        <aside className="mn-problem-panel" aria-label="Problem statement that carries into the reframe">
+          <span className="mn-problem-panel__mark">{scene.mark}</span>
+          <p className="mn-problem-panel__body">
+            <span>{scene.lines[0]}</span>
+            <span>{scene.lines[1]}</span>
+          </p>
+          <p className="mn-problem-panel__foot">{scene.foot}</p>
+        </aside>
       );
     case "artifact":
       return (

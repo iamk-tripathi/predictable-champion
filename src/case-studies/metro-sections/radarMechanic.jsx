@@ -48,11 +48,11 @@ export const RICKSHAW_STATUS = {
 export const STORY_CAPTIONS = [
   {
     t: "Six riders, booked from home",
-    d: "Every rider is a Quarter User — intent declared, but all still beyond the 150 m ring. Pooled weight is 1.5, so nothing leaves the station yet.",
+    d: "Every rider is a Quarter User with intent declared, but all are still beyond the 150 m ring. Pooled weight is 1.5, so nothing leaves the station yet.",
   },
   {
     t: "Rickshaw 1 is readied",
-    d: "Riders edge inward. Aggregated ¼-demand decides the vehicle type — Rickshaw 1 is prepared at the metro, held but not yet dispatched.",
+    d: "Riders edge inward. Aggregated ¼-demand decides the vehicle type. Rickshaw 1 is prepared at the metro, held but not yet dispatched.",
   },
   {
     t: "First dispatch",
@@ -64,7 +64,7 @@ export const STORY_CAPTIONS = [
   },
   {
     t: "Arrival at the pole",
-    d: "Riders reach the 20 m core as Full Users. Rickshaw 1 has arrived and Rickshaw 2 is seconds behind — the wait collapses to near zero.",
+    d: "Riders reach the 20 m core as Full Users. Rickshaw 1 has arrived and Rickshaw 2 is seconds behind, so the wait collapses to near zero.",
   },
 ];
 
