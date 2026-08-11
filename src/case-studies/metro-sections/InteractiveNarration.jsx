@@ -123,8 +123,16 @@ const SCENES = [
       "Every statement was synthesised into insights and breakdowns. Design ideas were derived from them.",
     ],
     artifacts: [
-      { label: "Field interview · driver, in context", kind: "photo" },
-      { label: "Synthesis sheet · statements → insights → ideas", kind: "sheet" },
+      {
+        label: "Field interview · driver, in context",
+        kind: "photo",
+        src: `${import.meta.env.BASE_URL}metro-narration/field-interview.png`,
+      },
+      {
+        label: "Synthesis sheet · statements → insights → ideas",
+        kind: "sheet",
+        src: `${import.meta.env.BASE_URL}metro-narration/synthesis-sheet.png`,
+      },
     ],
   },
   {
@@ -181,19 +189,31 @@ const SCENES = [
     headline: "To promise predictability, first define the routes",
     body:
       "So we studied the routes the campus commute already runs, and found they overlap. Around one metro station, ~25 poles share overlapping segments. It looks like this.",
-    artifact: { label: "Physical route model", kind: "photo" },
+    artifact: {
+      label: "Physical route model",
+      kind: "photo",
+      src: `${import.meta.env.BASE_URL}metro-narration/physical-route-model.png`,
+    },
   },
   {
     id: "9.1",
     kind: "figma",
-    artifact: { label: "Route map · poles linked to routes", node: "1088-2496" },
+    artifact: {
+      label: "Route map · poles linked to routes",
+      node: "1088-2496",
+      src: `${import.meta.env.BASE_URL}metro-narration/route-map-poles-linked.png`,
+    },
     caption:
       "Poles connect to routes with the metro station as their base, and a single pole can belong to multiple routes. (Pole & route placement is decided by K-means; more on that later.)",
   },
   {
     id: "9.2",
     kind: "figma",
-    artifact: { label: "A pole surges", node: "1088-2488" },
+    artifact: {
+      label: "A pole surges",
+      node: "1088-2488",
+      src: `${import.meta.env.BASE_URL}metro-narration/pole-surge-state.png`,
+    },
     caption:
       "Say a pole suddenly sees a surge and tells the station. That pole’s vehicle is already full, so why should it travel on to Pole 4 and Pole 6?",
   },
@@ -204,7 +224,11 @@ const SCENES = [
     headline: "A WhatsApp group",
     body:
       "Our driver persona still has to follow the route. They flag a surge to supervisors on a WhatsApp group, which is a completely unorganised method.",
-    artifact: { label: "Artifact 2 · driver WhatsApp group", kind: "screenshot" },
+    artifact: {
+      label: "Artifact 2 · driver WhatsApp group",
+      kind: "screenshot",
+      src: `${import.meta.env.BASE_URL}metro-narration/whatsapp-group.png`,
+    },
   },
   {
     id: "9.4",
@@ -217,7 +241,11 @@ const SCENES = [
   {
     id: "9.5",
     kind: "figma",
-    artifact: { label: "Pole detached & served independently", node: "1088-2494" },
+    artifact: {
+      label: "Pole detached & served independently",
+      node: "1088-2494",
+      src: `${import.meta.env.BASE_URL}metro-narration/pole-detached-state.png`,
+    },
     caption:
       "Pole 10 is detached from the loop and served on its own because it’s full now, and the nodes after it are re-attached to a different route.",
   },
@@ -402,6 +430,16 @@ function Placeholder({ label, kind = "photo", node }) {
   );
 }
 
+function ArtifactImage({ label, src, kind = "photo", node }) {
+  if (!src) return <Placeholder label={label} kind={kind} node={node} />;
+  return (
+    <figure className={`mn-asset mn-asset--${kind}`}>
+      <img src={src} alt={label} loading="lazy" />
+      <figcaption>{label}</figcaption>
+    </figure>
+  );
+}
+
 // ── Radar scene (imperative progress; isolated re-render) ─────────────────────
 
 const RadarScene = forwardRef(function RadarScene(_, ref) {
@@ -525,7 +563,7 @@ function SceneBody({ scene, radarRef }) {
           </ol>
           <div className="mn-figrow">
             {scene.artifacts.map((a) => (
-              <Placeholder key={a.label} label={a.label} kind={a.kind} />
+              <ArtifactImage key={a.label} label={a.label} kind={a.kind} src={a.src} />
             ))}
           </div>
         </div>
@@ -595,13 +633,22 @@ function SceneBody({ scene, radarRef }) {
           {scene.eyebrow && <p className="mn-eyebrow">{scene.eyebrow}</p>}
           <h2 className="mn-h2">{scene.headline}</h2>
           {scene.body && <p className="mn-lede">{scene.body}</p>}
-          <Placeholder label={scene.artifact.label} kind={scene.artifact.kind} />
+          <ArtifactImage
+            label={scene.artifact.label}
+            kind={scene.artifact.kind}
+            src={scene.artifact.src}
+          />
         </div>
       );
     case "figma":
       return (
         <div className="mn-block mn-block--figma">
-          <Placeholder label={scene.artifact.label} kind="figma" node={scene.artifact.node} />
+          <ArtifactImage
+            label={scene.artifact.label}
+            kind="figma"
+            node={scene.artifact.node}
+            src={scene.artifact.src}
+          />
           <p className="mn-caption">{scene.caption}</p>
         </div>
       );

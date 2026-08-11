@@ -116,8 +116,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 3px;
-  background: rgba(23, 24, 28, 0.08);
+  height: 7px;
+  background: rgba(23, 24, 28, 0.1);
   z-index: 5;
 }
 .mn__rail-fill {
@@ -131,7 +131,7 @@
 
 .mn__hint {
   position: fixed;
-  bottom: 26px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
@@ -143,6 +143,8 @@
   color: var(--ink-4);
   pointer-events: none;
 }
+
+
 
 /* ── Shared type ────────────────────────────────────────────────── */
 
@@ -417,6 +419,33 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-4);
+}
+
+.mn-asset {
+  margin: 0;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--paper-2);
+}
+.mn-asset img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.mn-asset figcaption {
+  margin: 0;
+  padding: 10px 12px 12px;
+  font-size: 0.86rem;
+  line-height: 1.4;
+  color: var(--ink-3);
+}
+.mn-asset--figma {
+  max-width: 560px;
+}
+.mn-asset--screenshot {
+  max-width: 320px;
+  margin: 0 auto;
 }
 
 .mn-block--figma {
