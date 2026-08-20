@@ -7,77 +7,38 @@ import DungaFly from "./DungaFly";
 const WORDS = ["Artificial Intelligence", "Tech", "Product"];
 const PHRASE_TRANSITION_MS = 1200;
 const PHRASE_HOLD_MS = 1600;
-const FEATURE_CARDS = [
+
+const CASE_STUDIES = [
   {
-    title: "UX Case Studies",
-    description: "Interfaces shaped with structure, rhythm, and decision clarity.",
-    accent: "01",
+    title: "Metro plus Service design case study",
+    url: "#/case-study/metro-plus-service-design",
+    thumbnail: `${import.meta.env.BASE_URL}case-thumbnails/metro-plus-video.gif`,
+    thumbnailPoster: `${import.meta.env.BASE_URL}case-thumbnails/metro-plus-video-poster.jpg`,
+    thumbnailType: "gif",
+    gifDurationMs: 4040,
   },
   {
-    title: "AI x UX",
-    description: "Transitions choreographed to guide attention instead of decorating it.",
-    accent: "02",
+    title: "AI x UX Case Study",
+    url: "#/case-study/aiux-design-system",
+    thumbnail: `${import.meta.env.BASE_URL}case-thumbnails/aiux-video.json`,
+    thumbnailType: "lottie",
+    // the true final frames fade to a plain background, so freeze earlier while the scene is still fully visible
+    stopFrame: 450,
   },
   {
-    title: "UX Minis",
-    description: "Ideas translated into screens that feel useful the moment they appear.",
-    accent: "03",
+    title: "KYC Case Study",
+    url: "#/case-study/kyc",
+    thumbnail: `${import.meta.env.BASE_URL}case-thumbnails/kyc-video.json`,
+    thumbnailType: "lottie",
+    loopForever: true,
+  },
+  {
+    title: "Western Union Motion Guidelines",
+    url: "#/case-study/motion-guidelines",
+    thumbnail: `${import.meta.env.BASE_URL}case-thumbnails/motion-guideline-video.json`,
+    thumbnailType: "lottie",
   },
 ];
-
-const SECTIONS = {
-  "UX Case Studies": {
-    title: "UX Case Studies",
-    items: [
-      {
-        title: "KYC Case Study",
-        description: "A deep dive into onboarding flows, compliance, and trust.",
-        url: "#/case-study/kyc",
-      },
-      {
-        title: "Western Union Motion Guidelines",
-        description: "Design system motion rules for reliable, expressive motion.",
-        url: "#/case-study/motion-guidelines",
-      },
-      {
-        title: "Metro plus Service design case study",
-        description: "Service design, systems thinking, and product strategy in enterprise.",
-        url: "#/case-study/metro-plus-service-design",
-      },
-    ],
-  },
-  "AI x UX": {
-    title: "AI x UX",
-    items: [
-      {
-        title: "AI x UX Case Study",
-        description: "The full AI design-system program and production-quality context layer.",
-        url: "#/case-study/aiux-design-system",
-      },
-      {
-        title: "Coming soon",
-        description: "More AI x UX work is on the way.",
-        url: "#",
-      },
-    ],
-  },
-  "UX Minis": {
-    title: "UX Minis",
-    items: [
-      {
-        title: "AI x UX in Fintech",
-        description: "A published guide on AI & UX strategy for financial products.",
-        url: "https://medium.com/design-bootcamp/ai-ux-in-fintech-a-comprehensive-guide-55f84114c0a0",
-        external: true,
-      },
-      {
-        title: "Coming soon",
-        description: "More UX mini stories are coming soon.",
-        url: "#",
-      },
-    ],
-  },
-};
 
 function getSegments(phrase) {
   let charIndex = 0;
@@ -213,9 +174,113 @@ const SwipeScene = memo(function SwipeScene() {
   );
 });
 
+function CaseStudyThumbnail({ item }) {
+  const containerRef = useRef(null);
+  const mediaRef = useRef(null);
+  const gifTimerRef = useRef(null);
+  const stopFrameHandlerRef = useRef(null);
+
+  useEffect(() => {
+    if (item.thumbnailType === "lottie") {
+      import("@lottiefiles/dotlottie-wc");
+    }
+  }, [item.thumbnailType]);
+
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) return undefined;
+
+    const playLottieFromStart = () => {
+      const media = mediaRef.current;
+      if (!media) return;
+      const start = () => {
+        const dl = media.dotLottie;
+        if (!dl) return;
+        if (stopFrameHandlerRef.current) {
+          dl.removeEventListener("frame", stopFrameHandlerRef.current);
+          stopFrameHandlerRef.current = null;
+        }
+        if (item.stopFrame != null) {
+          const onFrame = (event) => {
+            if (event.currentFrame >= item.stopFrame) {
+              dl.pause();
+              dl.setFrame(item.stopFrame);
+              dl.removeEventListener("frame", onFrame);
+              stopFrameHandlerRef.current = null;
+            }
+          };
+          stopFrameHandlerRef.current = onFrame;
+          dl.addEventListener("frame", onFrame);
+        }
+        dl.stop();
+        dl.play();
+      };
+      if (media.dotLottie?.isLoaded) {
+        start();
+      } else {
+        media.addEventListener("load", start, { once: true });
+      }
+    };
+
+    const pauseLottie = () => {
+      mediaRef.current?.dotLottie?.pause();
+    };
+
+    const playGifFromStart = () => {
+      const media = mediaRef.current;
+      if (!media) return;
+      clearTimeout(gifTimerRef.current);
+      media.src = `${item.thumbnail}?r=${Date.now()}`;
+      gifTimerRef.current = setTimeout(() => {
+        media.src = item.thumbnailPoster;
+      }, item.gifDurationMs ?? 0);
+    };
+
+    const freezeGif = () => {
+      clearTimeout(gifTimerRef.current);
+      const media = mediaRef.current;
+      if (media) media.src = item.thumbnailPoster;
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (item.thumbnailType === "lottie") playLottieFromStart();
+          else playGifFromStart();
+        } else if (item.thumbnailType === "lottie") {
+          pauseLottie();
+        } else {
+          freezeGif();
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0 }
+    );
+
+    observer.observe(node);
+    return () => {
+      observer.disconnect();
+      clearTimeout(gifTimerRef.current);
+    };
+  }, [item]);
+
+  return (
+    <div className="mesh-card-thumb" ref={containerRef} aria-hidden="true">
+      {item.thumbnailType === "lottie" ? (
+        <dotlottie-wc
+          ref={mediaRef}
+          src={item.thumbnail}
+          loop={item.loopForever || undefined}
+          style={{ width: "100%", height: "100%" }}
+        />
+      ) : (
+        <img ref={mediaRef} src={item.thumbnailPoster} alt="" loading="lazy" />
+      )}
+    </div>
+  );
+}
+
 export default function App() {
   const navigate = useNavigate();
-  const [activeSection, setActiveSection] = useState(null);
   const revealSectionRef = useRef(null);
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress: revealProgress } = useScroll({
@@ -227,35 +292,10 @@ export default function App() {
   const meshOpacity = useTransform(revealProgress, [0.06, 0.32, 0.52], [0, 0.62, 1]);
   const meshY = useTransform(revealProgress, [0.06, 0.4], ["4svh", "0svh"]);
   const screenScale = useTransform(revealProgress, [0.06, 0.44], [0.985, 1]);
-  const cardVariants = {
-    hidden: (index) => ({
-      opacity: 0,
-      x: -56 + index * -4,
-      y: 32,
-      scale: 0.94,
-    }),
-    visible: (index) => ({
-      opacity: 1,
-      x: 0,
-      y: 0,
-      scale: 1,
-      transition: {
-        delay: 0.1 + index * 0.14,
-        duration: 0.72,
-        ease: [0.18, 0.84, 0.32, 1],
-      },
-    }),
+  const handleCardClick = (item) => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+    navigate(item.url.replace("#", ""));
   };
-
-  const handleCardClick = (title) => {
-    setActiveSection(title);
-  };
-
-  const handleBack = () => {
-    setActiveSection(null);
-  };
-
-  const items = activeSection ? SECTIONS[activeSection]?.items || [] : FEATURE_CARDS;
 
   return (
     <main className="page-shell">
@@ -322,19 +362,12 @@ export default function App() {
           }
         >
           <div className="mesh-header">
-            <p className="mesh-eyebrow">
-              {activeSection ? `Selected: ${activeSection}` : "Choose a Path..."}
-            </p>
-            <h2 id="selected-work-title">
-              {activeSection
-                ? `Explore ${activeSection} options and open the right case study.`
-                : "Pick a path to explore case studies and know more about my work..."}
-            </h2>
+            <p className="mesh-eyebrow">Selected work</p>
+            <h2 id="selected-work-title">Case Studies</h2>
           </div>
 
           <motion.div
-            key={activeSection ?? "root"}
-            className="mesh-cards-layer"
+            className="mesh-cards-layer mesh-cards-layer--studies"
             initial={prefersReducedMotion ? false : "hidden"}
             animate={prefersReducedMotion ? undefined : "visible"}
             variants={{
@@ -342,9 +375,9 @@ export default function App() {
               visible: { transition: { staggerChildren: 0.1 } },
             }}
           >
-            {items.map((item, index) => (
+            {CASE_STUDIES.map((item, index) => (
               <motion.article
-                className="mesh-card"
+                className="mesh-card mesh-card--study"
                 key={item.title}
                 custom={index}
                 variants={{
@@ -358,74 +391,16 @@ export default function App() {
                 }}
                 onPointerMove={updateCardGlow}
                 onPointerLeave={resetCardGlow}
-                onClick={() => {
-                  if (activeSection) {
-                    if (item.url && item.url !== "#") {
-                      if (item.external) {
-                        window.open(item.url, "_blank", "noopener,noreferrer");
-                      } else {
-                        window.scrollTo({ top: 0, behavior: "instant" });
-                        navigate(item.url.replace("#", ""));
-                      }
-                    }
-                  } else {
-                    handleCardClick(item.title);
-                  }
-                }}
-                style={{ cursor: item.url !== "#" || !activeSection ? "pointer" : "default" }}
+                onClick={() => handleCardClick(item)}
+                style={{ cursor: "pointer" }}
               >
-                <div className="mesh-card-body">
-                  <div className="mesh-card-meta">
-                    <span className="mesh-card-accent">
-                      {activeSection ? String(index + 1).padStart(2, "0") : item.accent}
-                    </span>
-                    <span className="mesh-card-arrow" aria-hidden="true">
-                      <svg viewBox="0 0 20 20" fill="none" focusable="false">
-                        <path
-                          d="M7 5.75H5.75C5.06 5.75 4.5 6.31 4.5 7V14.25C4.5 14.94 5.06 15.5 5.75 15.5H13C13.69 15.5 14.25 14.94 14.25 14.25V13"
-                          stroke="currentColor"
-                          strokeWidth="1.6"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M9 11L15.5 4.5"
-                          stroke="currentColor"
-                          strokeWidth="1.6"
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d="M11.25 4.5H15.5V8.75"
-                          stroke="currentColor"
-                          strokeWidth="1.6"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </span>
-                  </div>
+                <div className="mesh-card-body mesh-card-body--study">
+                  <CaseStudyThumbnail item={item} />
                   <h3>{item.title}</h3>
-                  <p>{item.description}</p>
                 </div>
               </motion.article>
             ))}
           </motion.div>
-
-          {activeSection ? (
-            <motion.div
-              className="mesh-back-row"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.35 }}
-            >
-              <button type="button" className="mesh-back-button" onClick={handleBack}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M10 13L5 8L10 3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Back
-              </button>
-            </motion.div>
-          ) : null}
         </motion.div>
       </section>
 
