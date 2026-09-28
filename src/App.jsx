@@ -10,14 +10,6 @@ const PHRASE_HOLD_MS = 1600;
 
 const CASE_STUDIES = [
   {
-    title: "Metro plus Service design case study",
-    url: "#/case-study/metro-plus-service-design",
-    thumbnail: `${import.meta.env.BASE_URL}case-thumbnails/metro-plus-video.gif`,
-    thumbnailPoster: `${import.meta.env.BASE_URL}case-thumbnails/metro-plus-video-poster.jpg`,
-    thumbnailType: "gif",
-    gifDurationMs: 4040,
-  },
-  {
     title: "AI x UX Case Study",
     url: "#/case-study/aiux-design-system",
     thumbnail: `${import.meta.env.BASE_URL}case-thumbnails/aiux-video.json`,
@@ -37,6 +29,14 @@ const CASE_STUDIES = [
     url: "#/case-study/motion-guidelines",
     thumbnail: `${import.meta.env.BASE_URL}case-thumbnails/motion-guideline-video.json`,
     thumbnailType: "lottie",
+  },
+  {
+    title: "Metro plus Service design case study",
+    url: "#/case-study/metro-plus-service-design",
+    thumbnail: `${import.meta.env.BASE_URL}case-thumbnails/metro-plus-video.gif`,
+    thumbnailPoster: `${import.meta.env.BASE_URL}case-thumbnails/metro-plus-video-poster.jpg`,
+    thumbnailType: "gif",
+    gifDurationMs: 4040,
   },
 ];
 
